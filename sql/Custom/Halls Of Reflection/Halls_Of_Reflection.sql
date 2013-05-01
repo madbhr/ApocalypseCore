@@ -405,3 +405,9 @@ UPDATE `creature` SET `equipment_id`=14 WHERE `guid` IN (38563); -- HoR Ghost pr
 UPDATE `creature` SET `equipment_id`=1218 WHERE `guid` IN (38564); -- HoR shadowy_mercenary
 UPDATE `creature` SET `equipment_id`=107 WHERE `guid` IN (38525); -- HoR spectral_footman
 UPDATE `creature` SET `equipment_id`=2435 WHERE `guid` IN (38544); -- HoR tortured_rifleman
+
+-- Fix loot Halls of Reflection
+UPDATE `gameobject_template` SET `flags` = '0' WHERE `gameobject_template`.`entry` = 202212;
+UPDATE `gameobject_template` SET `flags` = '0' WHERE `gameobject_template`.`entry` = 201710;
+UPDATE `gameobject_template` SET `flags` = '0' WHERE `gameobject_template`.`entry` = 202337;
+UPDATE `gameobject_template` SET `flags` = '0' WHERE `gameobject_template`.`entry` = 202336;
