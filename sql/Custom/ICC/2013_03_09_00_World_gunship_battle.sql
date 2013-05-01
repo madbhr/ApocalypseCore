@@ -397,6 +397,12 @@ UPDATE `creature_template` SET `unit_flags`=2, `flags_extra`=2 WHERE `entry`=386
 UPDATE `item_template` SET `area` = 4812 WHERE `entry` = 49278;
 UPDATE `item_template` SET `map` = 631 WHERE `entry` = 49278;
 
+-- Fix Rotting Frost Giant
+UPDATE `creature` SET `spawntimesecs` =  '604800' WHERE `creature`.`id` =38494;
+UPDATE `creature` SET `spawntimesecs` =  '604800' WHERE `creature`.`id` =38490;
+UPDATE `creature_template` SET `rank` =  '3' WHERE `creature_template`.`entry` =38490;
+UPDATE `creature_template` SET `rank` =  '3' WHERE `creature_template`.`entry` =38494;
+
 -- Equipamentos
 UPDATE `creature` SET `equipment_id`=0 WHERE `guid` IN (50004); -- High Overlord Saurfang
 UPDATE `creature` SET `equipment_id`=0 WHERE `guid` IN (50006); -- Muradin Bronzebeard
