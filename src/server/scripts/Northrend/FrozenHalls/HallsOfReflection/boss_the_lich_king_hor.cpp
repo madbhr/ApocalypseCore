@@ -189,10 +189,6 @@ public:
                case 2:
                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE );
-                   // DoCast(me, SPELL_PAIN_AND_SUFFERING); Spell is currently broken, it also does damage to people in front of you.
-                   DoCast(me, SPELL_WINTER);
-                   Talk(SAY_LICH_KING_WINTER);
-                   me->SetSpeed(MOVE_WALK, walkSpeed, true);
                    StepTimer = 1000;
                    ++Step;
                    break;
@@ -203,6 +199,10 @@ public:
                case 4:
                    CallGuard(NPC_RISEN_WITCH_DOCTOR);
                    pInstance->SetData(DATA_ICE_WALL_1, DONE);
+				   // DoCast(me, SPELL_PAIN_AND_SUFFERING); Spell is currently broken, it also does damage to people in front of you.
+                   DoCast(me, SPELL_WINTER);
+                   Talk(SAY_LICH_KING_WINTER);
+                   me->SetSpeed(MOVE_WALK, walkSpeed, true);
                    StepTimer = 100;
                    Step = 0;
                    uiWall = 0;
@@ -294,7 +294,7 @@ public:
            }
        }
 
-	   void UpdateEscortAI(uint32 const diff)
+       void UpdateEscortAI(const uint32 diff)
        {
            if(!pInstance)
                return;
@@ -382,49 +382,82 @@ public:
    {
        npc_raging_gnoulAI(Creature *creature) : ScriptedAI(creature)
        {
-           pInstance = (InstanceScript*)creature->GetInstanceScript();
+           instance = (InstanceScript*)creature->GetInstanceScript();
            me->setActive(true);
            Reset();
        }
 
-       InstanceScript* pInstance;
-       uint32 EmergeTimer;
-       bool Emerge;
-       bool jumped;
-       uint64 uiLiderGUID;
+       InstanceScript* instance;
+       uint32 _emergeTimer;
+       bool _doEmerge;
+       bool _doJump;
+       uint64 _liderGuid;
 
        void Reset()
        {
            DoCast(me, SPELL_EMERGE_VISUAL);
-           EmergeTimer = 4000;
-           Emerge = false;
-           jumped = false;
+           _emergeTimer = 4000;
+           _doEmerge = false;
+           _doJump = false;
        }
 
        void JustDied(Unit* /*killer*/)
        {
-           if(!pInstance)
-               return;
+           if (!instance)
+                  return;
 
-           pInstance->SetData(DATA_SUMMONS, 0);
+           instance->SetData(DATA_SUMMONS, 0);
+       }
+
+       void AttackStart(Unit* who)
+       {
+           if (!who)
+                  return;
+
+           if (_doEmerge == false)
+                  return;
+
+           ScriptedAI::AttackStart(who);
        }
 
        void UpdateAI(uint32 diff)
        {
-           if (!UpdateVictim())
-                return;
+           if (!instance)
+                  return;
 
-            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f))
-            {
-                if (!jumped && me->IsWithinDistInMap(target, 30.0f) && !me->IsWithinDistInMap(target, 5.0f))
-                {
-                    jumped = true;
-                    DoCast(target, SPELL_GHOUL_JUMP);
-                }
+           if (instance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
+           {
+                  _liderGuid = instance->GetData64(DATA_ESCAPE_LIDER);
+                  Creature* lider = ((Creature*)Unit::GetUnit((*me), _liderGuid));
+
+               if (_doEmerge != true)
+               {
+                   if (_emergeTimer < diff)
+                   {
+                          _doEmerge = true;
+                          _liderGuid = instance->GetData64(DATA_ESCAPE_LIDER);
+                       if (lider)
+                       {
+                              DoResetThreat();                           
+                              me->GetMotionMaster()->Clear();
+                              me->GetMotionMaster()->MoveChase(lider);
+                       }
+                   }
+                   else
+                          _emergeTimer -= diff;
+               }
+
+               if (Unit *target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f))
+               {
+                   if (!_doJump && me->IsWithinDistInMap(target, 30.0f) && !me->IsWithinDistInMap(target, 5.0f))
+                   {
+                          _doJump = true;
+                          DoCast(target, SPELL_GHOUL_JUMP);
+                   }
+               }
            }
-           
-           if (pInstance->GetData(DATA_LICHKING_EVENT) == FAIL || pInstance->GetData(DATA_LICHKING_EVENT) == NOT_STARTED)
-               me->DespawnOrUnsummon();
+           else if (instance->GetData(DATA_LICHKING_EVENT) == FAIL || instance->GetData(DATA_LICHKING_EVENT) == NOT_STARTED)
+                       me->DespawnOrUnsummon();
 
            DoMeleeAttackIfReady();
        }
@@ -505,7 +538,7 @@ public:
                        if(Creature* pLider = ((Creature*)Unit::GetUnit((*me), uiLiderGUID)))
                        {
                            DoResetThreat();
-                           me->AI()->AttackStart(pLider);
+                           //me->AI()->AttackStart(pLider);
                            me->GetMotionMaster()->Clear();
                            me->GetMotionMaster()->MoveChase(pLider);
                        }
@@ -590,7 +623,7 @@ public:
                    if(Creature* pLider = ((Creature*)Unit::GetUnit((*me), uiLiderGUID)))
                    {
                        DoResetThreat();
-                       me->AI()->AttackStart(pLider);
+                       //me->AI()->AttackStart(pLider);
                        me->GetMotionMaster()->Clear();
                        me->GetMotionMaster()->MoveChase(pLider);
                    }
@@ -601,14 +634,18 @@ public:
                    if(Unit *target = SelectTarget(SELECT_TARGET_TOPAGGRO))
                        DoCast(target, SPELL_ABON_STRIKE);
                    uiStrikeTimer = urand(7000, 9000);
-               } else uiStrikeTimer -= diff;
+               } 
+			   else
+				   uiStrikeTimer -= diff;
 
                if (uiVomitTimer < diff)
                {
                    if(Unit *target = SelectTarget(SELECT_TARGET_TOPAGGRO))
                        DoCast(target, SPELL_VOMIT_SPRAY);
                    uiVomitTimer = urand(15000, 20000);
-               } else uiVomitTimer -= diff;
+               } 
+			   else 
+					uiVomitTimer -= diff;
            }
            else if (pInstance->GetData(DATA_LICHKING_EVENT) == FAIL || pInstance->GetData(DATA_LICHKING_EVENT) == NOT_STARTED)
                me->DespawnOrUnsummon();
