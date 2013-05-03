@@ -62,7 +62,6 @@ Transport* MapManager::LoadTransportInMap(Map* instance, uint32 goEntry, uint32 
     m_TransportsByInstanceIdMap[instance->GetInstanceId()].insert(t);
     t->SetMap(instance);
     t->AddToWorld();
-	t->BuildWaitMovePacket(instance);
 
     return t;
 }
@@ -203,7 +202,7 @@ void MapManager::LoadTransports()
         uint32 mapid = t->m_WayPoints[0].mapid;
         float o = 1.0f;
 
-         // creates the Gameobject -- Gunship
+        // creates the Gameobject -- Gunship
         if (!t->Create(lowguid, entry, mapid, x, y, z, o, 100, 0))
         {
             delete t;

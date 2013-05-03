@@ -1,5 +1,4 @@
 -- Muradin & Saurfang
--- Muradin & Saurfang
 DELETE FROM `creature_template` WHERE `entry` IN (50004, 50006);
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction_A`, `faction_H`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `mindmg`, `maxdmg`, `dmgschool`, `attackpower`, `dmg_multiplier`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `minrangedmg`, `maxrangedmg`, `rangedattackpower`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `Health_mod`, `Mana_mod`, `Armor_mod`, `RacialLeader`, `questItem1`, `questItem2`, `questItem3`, `questItem4`, `questItem5`, `questItem6`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `WDBVerified`) VALUES
 (50004, 0, 0, 0, 0, 0, 11686, 0, 0, 0, 'High Overlord Saurfang', '', '', 0, 80, 80, 2, 1802, 1802, 0, 0, 0, 1, 1, 252, 357, 0, 304, '7.5', 2000, 0, 1, 33554432, 8, 0, 0, 0, 0, 0, 215, 320, 44, 7, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1000, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, '', 12340),
@@ -230,18 +229,18 @@ INSERT INTO `conditions` (`SourceTypeOrReferenceId`, `SourceEntry`, `ConditionTy
 -- Update condition by TrinityCore:
 DELETE FROM conditions WHERE SourceTypeOrReferenceId=13 AND SourceEntry IN (69400, 70173, 69402, 70175, 70374, 70383, 69705, 72959);
 INSERT INTO conditions (SourceTypeOrReferenceId, SourceGroup, SourceEntry, SourceId, ElseGroup, ConditionTypeOrReference, ConditionTarget, ConditionValue1, ConditionValue2, ConditionValue3, NegativeCondition, ErrorTextId, ScriptName, Comment) VALUES
-
 -- Alliance
 (13, 3, 69400, 0, 0, 31, 0, 3, 37540, 0, 0, 0, '', NULL),
 (13, 1, 70374, 0, 0, 31, 0, 3, 37540, 0, 0, 0, '', NULL),
 (13, 3, 69402, 0, 0, 31, 0, 3, 37540, 0, 0, 0, '', NULL),
 (13, 1, 69705, 0, 0, 31, 0, 3, 36838, 0, 0, 0, '', NULL),
-
 -- Horde
 (13, 3, 70175, 0, 1, 31, 0, 3, 37215, 0, 0, 0, '', NULL),
 (13, 1, 70383, 0, 1, 31, 0, 3, 37215, 0, 0, 0, '', NULL),
 (13, 3, 70173, 0, 1, 31, 0, 3, 37215, 0, 0, 0, '', NULL),
 (13, 1, 69705, 0, 1, 31, 0, 3, 36839, 0, 0, 0, '', NULL);
+
+
 
 -- Loot templates
 -- Fix by TrinityCore
@@ -341,7 +340,7 @@ INSERT INTO `gameobject_loot_template` (`entry`,`item`,`ChanceOrQuestChance`,`lo
 (@Gunship25H,@SfShard,-75,1,0,1,1), -- Shadowfrost Shard @ 75% chance
 (@Gunship25H,@PriSar,50,1,0,1,1); -- Primordial Saronite @ 50% chance
 
-SET @Twins := 34329;
+SET @Twins := 34329; 
 SET @emblem := 49426;
 DELETE FROM `reference_loot_template` WHERE `entry`=@Twins;
 INSERT INTO `reference_loot_template` (`entry`, `item`, `ChanceOrQuestChance`, `lootmode`, `groupid`, `mincountOrRef`, `maxcount`) VALUES
@@ -396,13 +395,3 @@ UPDATE `creature_template` SET `unit_flags`=2, `flags_extra`=2 WHERE `entry`=386
 -- Prevent players from exploiting the Rocket pack item outside of raid
 UPDATE `item_template` SET `area` = 4812 WHERE `entry` = 49278;
 UPDATE `item_template` SET `map` = 631 WHERE `entry` = 49278;
-
--- Fix Rotting Frost Giant
-UPDATE `creature` SET `spawntimesecs` =  '604800' WHERE `creature`.`id` =38494;
-UPDATE `creature` SET `spawntimesecs` =  '604800' WHERE `creature`.`id` =38490;
-UPDATE `creature_template` SET `rank` =  '3' WHERE `creature_template`.`entry` =38490;
-UPDATE `creature_template` SET `rank` =  '3' WHERE `creature_template`.`entry` =38494;
-
--- Equipamentos
-UPDATE `creature` SET `equipment_id`=0 WHERE `guid` IN (50004); -- High Overlord Saurfang
-UPDATE `creature` SET `equipment_id`=0 WHERE `guid` IN (50006); -- Muradin Bronzebeard

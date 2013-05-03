@@ -65,6 +65,7 @@ DoorData const doorData[] =
     {GO_DOODAD_ICECROWN_ROOSTPORTCULLIS_02,  DATA_VALITHRIA_DREAMWALKER, DOOR_TYPE_SPAWN_HOLE, BOUNDARY_S   },
     {GO_DOODAD_ICECROWN_ROOSTPORTCULLIS_03,  DATA_VALITHRIA_DREAMWALKER, DOOR_TYPE_SPAWN_HOLE, BOUNDARY_N   },
     {GO_DOODAD_ICECROWN_ROOSTPORTCULLIS_04,  DATA_VALITHRIA_DREAMWALKER, DOOR_TYPE_SPAWN_HOLE, BOUNDARY_S   },
+	{GO_SINDRAGOSA_ENTRANCE_DOOR,            DATA_SINDRAGOSA_GAUNTLET,   DOOR_TYPE_PASSAGE,    BOUNDARY_N   },
     {GO_SINDRAGOSA_ENTRANCE_DOOR,            DATA_SINDRAGOSA,            DOOR_TYPE_ROOM,       BOUNDARY_S   },
     {GO_SINDRAGOSA_SHORTCUT_ENTRANCE_DOOR,   DATA_SINDRAGOSA,            DOOR_TYPE_PASSAGE,    BOUNDARY_E   },
     {GO_SINDRAGOSA_SHORTCUT_EXIT_DOOR,       DATA_SINDRAGOSA,            DOOR_TYPE_PASSAGE,    BOUNDARY_NONE},
@@ -163,7 +164,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                 MuradinBronzebeardNotVisualGUID = 0;
                 GbBattleMageGUID = 0;
                 isPrepared = false;
-                SindragosasWardGUID = 0;				
+                SindragosasWardGUID = 0;	
             }
 
             void FillInitialWorldStates(WorldPacket& data)
@@ -319,7 +320,32 @@ class instance_icecrown_citadel : public InstanceMapScript
                         // Remove corpse as soon as it dies (and respawn 10 seconds later)
                         creature->SetCorpseDelay(0);
                         creature->SetReactState(REACT_PASSIVE);
-                        break;						
+                        break;
+                    case NPC_SINDRAGOSAS_WARD:
+                        SindragosasWardGUID = creature->GetGUID();
+						break;	
+					case NPC_GB_SKYBREAKER:
+                        SkybreakerBossGUID = creature->GetGUID();
+                        break;
+                    case NPC_GB_ORGRIMS_HAMMER:
+                        OrgrimmarBossGUID = creature->GetGUID();
+                        break;
+                    case NPC_GB_HIGH_OVERLORD_SAURFANG:
+                        DeathbringerSaurfangGbGUID = creature->GetGUID();
+                        break;
+                    case NPC_GB_MURADIN_BRONZEBEARD:
+                        MuradinBronzebeardGbGUID = creature->GetGUID();
+                        break;
+                    case NPC_GB_HIGH_OVERLORD_SAURFANG_NOT_VISUAL:
+                        DeathbringerSaurfangNotVisualGUID = creature->GetGUID();
+                        break;
+                    case NPC_GB_MURADIN_BRONZEBEARD_NOT_VISUAL:
+                        MuradinBronzebeardNotVisualGUID = creature->GetGUID();
+                        break;
+                    case NPC_GB_SKYBREAKER_SORCERERS:
+                    case NPC_GB_KORKRON_BATTLE_MAGE:
+                        GbBattleMageGUID = creature->GetGUID();
+                        break;
                     default:
                         break;
                 }
@@ -591,8 +617,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                     case NPC_GB_SKYBREAKER_SORCERERS:
                     case NPC_GB_KORKRON_BATTLE_MAGE:
                         GbBattleMageGUID = go->GetGUID();
-                        break;
-						
+                        break;						
                     default:
                         break;
                 }
@@ -730,7 +755,9 @@ class instance_icecrown_citadel : public InstanceMapScript
                     case DATA_MURADIN_BRONZEBEARD_NOT_VISUAL:
                         return MuradinBronzebeardNotVisualGUID;
                     case DATA_GB_BATTLE_MAGE:
-                        return GbBattleMageGUID;					
+                        return GbBattleMageGUID;
+                    case DATA_SINDRAGOSA_GAUNTLET:
+                        return SindragosasWardGUID;
                     default:
                         break;
                 }
@@ -746,7 +773,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                 switch (type)
                 {
                     case DATA_LADY_DEATHWHISPER:
-                        //SetBossState(DATA_GUNSHIP_EVENT, state);
+                        //SetBossState(DATA_GUNSHIP_EVENT, state);    // TEMP HACK UNTIL GUNSHIP SCRIPTED
                         if (state == DONE)
                         {
                             if (GameObject* elevator = instance->GetGameObject(LadyDeathwisperElevatorGUID))
@@ -1585,7 +1612,7 @@ class instance_icecrown_citadel : public InstanceMapScript
             uint64 GBSaurfangGUID;
             uint64 GBSkybreakerGUID;
             uint64 GBOgrimsHammerGUID;
-            uint64 SindragosasWardGUID;			
+            uint64 SindragosasWardGUID;
         };
 
         InstanceScript* GetInstanceScript(InstanceMap* map) const
