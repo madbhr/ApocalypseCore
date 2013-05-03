@@ -1,40 +1,13 @@
 == Apocalypse ==
 
-Apocalypse es un emulador creado con la unión de varios repositorios reconocidos y 
-código nuestro con el afán de complementarlos y completarlos a todos en 
-un único emulador que pueda brindar codigo util, actualizado y estable. Mira 
-nuestro archivo WHAT_IS_INSIDE para mayor detalle de lo que el emulador contiene.
+ApocalypseCore Teams es un grupo de Programadores encargados de desarrollar Emuladores con la colaboración de codigos de usuarios reconocidos y con código nuestro con el objetivo de complementarlos y completarlos a todos en un único emulador donde podamos obtener codigo util, actualizado y estable para servidores privados de World Of WarCraft.
 
-Hemos generado una metodología y planificación interna la cual nos permite estar 
-al día en las actualizaciones y mejoras de trinitycore, parches propios y de
-repositorios conocidos, puedes leerla en el archivo PLANIFICACION, si alguna 
-sugerencia y/o aporte que quieras darnos tienes la mayor bienvenida en el equipo 
-de los programadores de este repositorio basado en trinitycore.
+También queremos agradecer al equipo de TrinityCore por el código base del proyecto.
 
 Gracias a quienes hacen este proyecto posible y su respectivo crédito a:
 
 Copyright (C) TrinityCore (http://www.trinitycore.org)
-Copyright (C) OneCore (http://www.projectonecore.tk)
-Copyright (C) Eilo (https://github.com/eilo)
-Copyright (C) Hispano (https://github.com/Hispano)
-Copyright (C) Ws (https://github.com/wsrean)
-Copyright (C) Andron (https://github.com/Andron-Juanka)
-Copyright (C) Muzashi (https://github.com/Muzashi)
-Copyright (C) Eilo-Patches (https://github.com/eilo/Eilo-Patches)
-Copyright (C) ReanEmu (https://github.com/ComunidadRean/ReanEmu)
-Copyright (C) WoWReAn Emu (https://github.com/eilo/wowrean-emu)
-Copyright (C) Leak (https://github.com/leak/TrinityCore)
-Copyright (C) ChaosCore (https://github.com/Locknes/ChaosCore)
-Copyright (C) Darkman (https://github.com/darkman1983/TrinityCore)
-Copyright (C) Retriman (https://github.com/Retriman/TrinityCore)
-Copyright (C) HachasyDados (https://github.com/HachasyDados/HD-TCore)
-Copyright (C) Warpten (https://github.com/Warpten/TrinityCore.git)
-Copyright (C) ZoneLimit (https://github.com/Jildor/ZoneLimit)
-Copyright (C) Shadez (https://github.com/Shadez/wowarmory)
-Copyright (C) Venugh (https://github.com/Venugh/TrinityCore)
-Copyright (C) FaceCore (https://github.com/SignFinder/FaceCore)
-Copyright (C) TcRc (https://github.com/TrinityCoreRu)
-Copyright (C) Mouse (https://github.com/Mouse/tc2-patches)
+Copyright (C)ApocalypseCoreTeam (http://www.apocalypsecore.tk)
 
 = TrinityCore -- Thanks/credits file =
 
@@ -137,4 +110,4 @@ Per Wilhelmsen, telsamat, Various, erimioa, Sawiner, zergtmn, SimonDMII, pek2011
 laly, mrquickfx, Koord, amnell, GWRde, EdwinDW, gildor, darkstalker, Feanordev, _manuel_,
 thymuswisewood, sohrab, Lazzalf, Taser, Ottowayne, Exordian, nucleartux, John Holiver, j4r0d,
 Trazom62, Brian, enjoi, teacher, Alex Bolotsin, Troy, silver1ce, nihal, arcanzic, Chaz Brown,
-pendragon, aven_coda, cca220v, ArcticDevil, One, derex_tri, Siktir, Chacal1231, Rip
+pendragon, aven_coda, cca220v, ArcticDevil, OneLuiz, derex_tri, Siktir, Chacal1231
