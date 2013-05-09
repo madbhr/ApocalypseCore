@@ -110,7 +110,7 @@ public:
             if (!UpdateVictim())
                 return;
 
-            //TODO: add abilities for the different creatures
+            /// @todo add abilities for the different creatures
             DoMeleeAttackIfReady();
         }
     };
