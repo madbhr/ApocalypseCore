@@ -51,8 +51,7 @@ UPDATE `item_template` SET ScriptName = 'item_icc_rocket_pack' WHERE entry = 492
 DELETE FROM `areatrigger_scripts` WHERE `entry` IN (5630, 5628, 5623);
 INSERT INTO `areatrigger_scripts` (`entry`,`ScriptName`) VALUES
 (5628,'at_icc_land_frostwyrm'),
-(5630,'at_icc_land_frostwyrm'),
-(5623,'at_icc_start_sindragosa_gauntlet');
+(5630,'at_icc_land_frostwyrm');
 
 -- Spell Scripts
 DELETE FROM `spell_script_names` WHERE `spell_id` IN (70713, 68645, 69471, 69488, 69402, 70175, 71335, 71339);
