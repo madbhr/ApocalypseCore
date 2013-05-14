@@ -1306,7 +1306,6 @@ void AddBattlegroundScripts()
 
 void AddSC_Boss_Announcer();
 void AddSC_NPC_Transmogrify();
-//void AddSC_icc_rep_rings();
 #endif
 
 void AddCustomScripts()
@@ -1315,6 +1314,5 @@ void AddCustomScripts()
     /* This is where custom scripts should be added. */
     AddSC_Boss_Announcer();
     AddSC_NPC_Transmogrify();
-	//AddSC_icc_rep_rings();
 #endif
 }
