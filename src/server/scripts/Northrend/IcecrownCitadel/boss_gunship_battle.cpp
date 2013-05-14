@@ -3370,5 +3370,5 @@ void AddSC_boss_gunship_battle()
     new spell_gb_overheat_drain();
     new spell_gb_incinerating_blast();
     new spell_gb_burning_pitch();
-    new spell_icc_rocket_pack();
+    new spell_rocket_pack();
 }
