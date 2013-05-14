@@ -10,9 +10,6 @@
 
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
-	Custom/Transmogrification.h
-	Custom/Transmogrification.cpp
-	Custom/custom_bossannounce.cpp
 )
 
 message("  -> Prepared: Custom")

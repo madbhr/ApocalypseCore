@@ -499,7 +499,6 @@ INSERT INTO spell_script_names (spell_id, ScriptName) VALUES
 (67680, 'spell_eadric_hoj'), -- Eadric's Hammer of Justice
 (66903, 'spell_eadric_hoj'); 
 
-
 -- Stomwind champion template
 UPDATE `creature_template` SET `unit_flags`=33554434, `AIName`='' WHERE `entry`=35328;
 DELETE FROM `spell_script_names` WHERE `spell_id` = 66515;
