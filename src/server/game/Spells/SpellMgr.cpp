@@ -3663,6 +3663,9 @@ void SpellMgr::LoadDbcDataCorrections()
                 spellInfo->manaCost = 0;
                 spellInfo->manaPerSecond = 0;
                 break;
+			case 42793: // Burn Body (Quest: War Is Hell!)
+				spellInfo->EffectImplicitTargetA[2] = TARGET_UNIT_CASTER;
+				spellInfo->EffectMiscValue[2] = 24008;
             case 24314: // Threatening Gaze
                 spellInfo->AuraInterruptFlags |= AURA_INTERRUPT_FLAG_CAST | AURA_INTERRUPT_FLAG_MOVE | AURA_INTERRUPT_FLAG_JUMP;
             default:
