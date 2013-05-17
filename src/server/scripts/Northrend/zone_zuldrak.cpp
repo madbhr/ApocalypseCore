@@ -265,7 +265,6 @@ enum eGurgthock
     NPC_FIEND_AIR                                 = 30045,
     NPC_FIEND_FIRE                                = 30042,
     NPC_FIEND_EARTH                               = 30043,
-	NPC_VLADOF_THE_BUTCHER						  = 30022,
 
     SAY_QUEST_ACCEPT_TUSKARRMAGEDON               = 0,
     SAY_QUEST_ACCEPT_KORRAK_1                     = 1,
@@ -478,7 +477,7 @@ public:
                                if (!player)
                                    return;
 
-                                std::string sText = ("Prepare to make you stand, " + std::string(player->GetName()) + "! Get in the Amphitheater and stand ready! Remember, you and your opponent must stay in the arena at all times or you will be disqualified!");
+                                std::string sText = ("Prepare to make your stand, " + std::string(player->GetName()) + "! Get in the Amphitheater and stand ready! Remember, you and your opponent must stay in the arena at all times or you will be disqualified!");
                                 me->MonsterSay(sText.c_str(), LANG_UNIVERSAL, 0);
                                 uiTimer = 3000;
                                 uiPhase = 8;
