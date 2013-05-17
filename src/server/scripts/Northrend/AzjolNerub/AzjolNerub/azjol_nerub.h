@@ -25,13 +25,28 @@ enum Data64
     DATA_ANUBARAK,
     DATA_WATCHER_GASHRA,
     DATA_WATCHER_SILTHIK,
-    DATA_WATCHER_NARJIL
+    DATA_WATCHER_NARJIL,
+    DATA_FRONT_DOOR_TRIGGER_A_GUID,
+    DATA_FRONT_DOOR_TRIGGER_B_GUID,
+    DATA_SIDE_DOOR_TRIGGER_GUID
 };
+
 enum Data
 {
     DATA_KRIKTHIR_THE_GATEWATCHER_EVENT,
     DATA_HADRONOX_EVENT,
     DATA_ANUBARAK_EVENT
+};
+
+enum CreatureEntries
+{
+    NPC_HADRONOX					= 28921,
+    NPC_WORLD_TRIGGER_LARGE_AOI		= 23472
+};
+
+enum InstanceActions
+{
+    ACTION_SUMMON_REINFORCEMENTS = 1 // Used by Hadronox to start controlling front door triggers
 };
 
 #endif
