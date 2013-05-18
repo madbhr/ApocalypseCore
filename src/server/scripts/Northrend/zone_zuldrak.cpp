@@ -265,6 +265,7 @@ enum eGurgthock
     NPC_FIEND_AIR                                 = 30045,
     NPC_FIEND_FIRE                                = 30042,
     NPC_FIEND_EARTH                               = 30043,
+	NPC_VLADOF_THE_BUTCHER                        = 30022,
 
     SAY_QUEST_ACCEPT_TUSKARRMAGEDON               = 0,
     SAY_QUEST_ACCEPT_KORRAK_1                     = 1,
