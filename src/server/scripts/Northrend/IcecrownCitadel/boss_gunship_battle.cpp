@@ -3151,7 +3151,7 @@ class spell_remove_rocket_pack : public SpellScriptLoader
  
                 int32 itemId = GetEffectValue();
                 uint32 itemCount = hitPlr->GetItemCount(itemId, false); // Should be 1, but just in case.
-                hitPlr->DestroyItemCount(itemId, -itemCount, true, false);
+                hitPlr->DestroyItemCount(itemId, itemCount, true, false);
             }
  
             void Register()

@@ -32,7 +32,7 @@ INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entr
 UPDATE `creature` SET `equipment_id`=1290 WHERE `guid` IN (37554); -- Sylvanas part 1
 UPDATE `creature` SET `equipment_id`=1221 WHERE `guid` IN (36955); -- HoR tortured_rifleman
 
-UPDATE  `creature_template` SET  `ScriptName` =  'npc_frostworn_general' WHERE  `entry` =36723;
+UPDATE  `creature_template` SET  `ScriptName` =  'npc_frostsworn_general' WHERE  `entry` =36723;
 UPDATE  `creature_template` SET  `ScriptName` =  'npc_raging_gnoul' WHERE  `entry` =36940;
 UPDATE  `creature_template` SET  `ScriptName` =  'npc_risen_witch_doctor' WHERE  `entry` =36941;
 UPDATE  `creature_template` SET  `ScriptName` =  'npc_abon' WHERE  `entry` =37069;

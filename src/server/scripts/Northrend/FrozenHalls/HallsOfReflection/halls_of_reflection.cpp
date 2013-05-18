@@ -796,6 +796,14 @@ enum TrashSpells
 
     // Quel'Delar Event
     SPELL_QUELDELAR_AURA			= 70013,
+	
+	SPELL_CAST_VISUAL                  = 65633, //Jaina/Sylavana lo lanzan para invocar a uther
+    SPELL_BOSS_SPAWN_AURA              = 72712, //Falric and Marwyn
+    SPELL_UTHER_DESPAWN                = 70693,
+    SPELL_TAKE_FROSTMOURNE             = 72729,
+    SPELL_FROSTMOURNE_DESPAWN          = 72726,
+    SPELL_FROSTMOURNE_VISUAL           = 73220,
+    SPELL_FROSTMOURNE_SOUNDS           = 70667,
 };
 
 class npc_ghostly_priest : public CreatureScript
@@ -1400,24 +1408,25 @@ enum GENERAL_EVENT
     SAY_GEN_AGGRO = 0,
     SAY_GEN_DEATH = 1,
 
-    SPELL_SHIELD_THROWN = 69222,
-    H_SPELL_SHIELD_THROWN = 73076,
-    SPELL_SPIKE = 69184,
-    H_SPELL_SPIKE = 70399,
-    SPELL_CLONE_NAME = 57507,
-    SPELL_CLONE_MODEL = 45204,
+	//Frostsworn's Speels
+    SPELL_SHIELD_THROWN    = 69222,
+    H_SPELL_SHIELD_THROWN  = 73076,
+    SPELL_SPIKE            = 69184,
+    H_SPELL_SPIKE          = 70399,
+    SPELL_CLONE_NAME       = 57507,
+    SPELL_CLONE_MODEL      = 45204,
 
-    // Reflection'Spells
-    SPELL_BALEFUL_STRIKE = 69933,
-    SPELL_SPIRIT_BURST = 69900,
+    // Reflection's Spells
+    SPELL_BALEFUL_STRIKE   = 69933,
+    SPELL_SPIRIT_BURST     = 69900,
     H_SPELL_BALEFUL_STRIKE = 70400,
-    H_SPELL_SPIRIT_BURST = 73046,
+    H_SPELL_SPIRIT_BURST   = 73046,
 };
 
-class npc_frostworn_general : public CreatureScript
+class npc_frostsworn_general : public CreatureScript
 {
 public:
-    npc_frostworn_general() : CreatureScript("npc_frostworn_general") { }
+    npc_frostsworn_general() : CreatureScript("npc_frostsworn_general") { }
 
     struct npc_frostworn_generalAI : public ScriptedAI
     {
@@ -2286,25 +2295,80 @@ class npc_queldelar : public CreatureScript
 public:
     npc_queldelar() : CreatureScript("npc_queldelar") { }
 
-    CreatureAI* GetAI(Creature* pCreature) const
+    CreatureAI* GetAI(Creature* creature) const
     {
-        return new npc_queldelarAI(pCreature);
+        return new npc_queldelarAI(creature);
     }
     struct npc_queldelarAI  : public ScriptedAI
     {
+                uint32 Bladestorm;
+                uint32 Heroic_Strike;
+                uint32 Mortal_Strike;
+                uint32 Whirlind;
+                bool summoned;
+
+    void Reset()
+    {
+        Bladestorm = 10000;
+        Heroic_Strike = 5000;
+        Mortal_Strike = 7000;
+        Whirlind = 13000;
+                summoned = false;
+                me->SetVisible(false);
+                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
+                me->SetReactState(REACT_PASSIVE);
+    }
+
         npc_queldelarAI(Creature *c) : ScriptedAI(c)
         {
         }
-        void MoveInLineOfSight(Unit* pWho)
-        {
-            if (!pWho)
+
+                void MoveInLineOfSight(Unit* who)
+                {
+                        if (!who)
                 return;
-            if (me->IsWithinDistInMap(pWho, 20) && pWho->HasAura(SPELL_QUELDELAR_AURA))
+            if (me->IsWithinDistInMap(who, 20) && who->HasAura(SPELL_QUELDELAR_AURA) && (summoned==false))
             {
-                me->SummonCreature(NPC_QUELDELAR, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 60000);
-                me->DisappearAndDie();
-            }
-        }
+                                me->SetVisible(true);
+                                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
+                                me->SetReactState(REACT_AGGRESSIVE);
+                                summoned==true;
+                        }
+                }
+
+                void UpdateAI(uint32 uiDiff)
+                {
+                        
+
+                        if (!UpdateVictim())
+                                return;
+
+                        if (Bladestorm <= uiDiff)
+                        {
+                                DoCast(me->getVictim(), Bladestorm);
+                                Bladestorm = 10000;
+                        } else Bladestorm -= uiDiff;
+
+                        if (Heroic_Strike <= uiDiff)
+                        {
+                                DoCast(me->getVictim(), Heroic_Strike);
+                                Heroic_Strike = 5000;
+                        } else Heroic_Strike -= uiDiff;
+
+                        if (Mortal_Strike <= uiDiff)
+                        {
+                                DoCast(me->getVictim(), Mortal_Strike);
+                                Mortal_Strike = 7000;
+                        } else Mortal_Strike -= uiDiff;
+
+                        if (Whirlind <= uiDiff)
+                        {
+                                DoCast(me->getVictim(), Whirlind);
+                                Whirlind = 13000;
+                        } else Whirlind -= uiDiff;
+
+                        DoMeleeAttackIfReady();
+                }
     };
 };
 
@@ -2320,7 +2384,7 @@ void AddSC_halls_of_reflection()
     new npc_spectral_footman();
     new npc_tortured_rifleman();
     new at_hor_waves_restarter();
-    new npc_frostworn_general();
+    new npc_frostsworn_general();
     new npc_spiritual_reflection();
     new npc_queldelar();
 }
