@@ -796,14 +796,6 @@ enum TrashSpells
 
     // Quel'Delar Event
     SPELL_QUELDELAR_AURA			= 70013,
-	
-	SPELL_CAST_VISUAL                  = 65633, //Jaina/Sylavana lo lanzan para invocar a uther
-    SPELL_BOSS_SPAWN_AURA              = 72712, //Falric and Marwyn
-    SPELL_UTHER_DESPAWN                = 70693,
-    SPELL_TAKE_FROSTMOURNE             = 72729,
-    SPELL_FROSTMOURNE_DESPAWN          = 72726,
-    SPELL_FROSTMOURNE_VISUAL           = 73220,
-    SPELL_FROSTMOURNE_SOUNDS           = 70667,
 };
 
 class npc_ghostly_priest : public CreatureScript
@@ -2332,7 +2324,7 @@ public:
                                 me->SetVisible(true);
                                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
                                 me->SetReactState(REACT_AGGRESSIVE);
-                                summoned==true;
+                                summoned=true;
                         }
                 }
 
