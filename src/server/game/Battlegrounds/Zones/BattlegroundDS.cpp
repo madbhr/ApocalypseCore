@@ -277,5 +277,5 @@ void BattlegroundDS::KnockBackPlayer(Unit *player, float angle, float horizontal
         ((Player*)player)->GetSession()->SendPacket(&data);
     }
     else
-        sLog->outError(LOG_FILTER_GENERAL, "The target of KnockBackPlayer must be a player !");
+        TC_LOG_ERROR(LOG_FILTER_GENERAL, "The target of KnockBackPlayer must be a player !");
 }
