@@ -19,6 +19,7 @@
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 #include "ScriptedEscortAI.h"
+#include "ScriptedFollowerAI.h"
 #include "Player.h"
 #include "SpellInfo.h"
 #include "CreatureTextMgr.h"
@@ -694,101 +695,73 @@ class npc_venture_co_straggler : public CreatureScript
 };
 
 /*######
-## Quest 13666 & 13673:  A Blade Fit For A Champion
+## Quest 13666 & 13673:  A blade fit for a champion
 ######*/
 
 enum eLakeFrog
 {
-    SPELL_WARTSBGONE_LIP_BALM                         = 62574,
-    SPELL_FROG_LOVE                                   = 62537,
-    SPELL_WARTS                                       = 62581,
-    NPC_MAIDEN_OF_ASHWOOD_LAKE                        = 33220,
-
-    QUEST_1                                           = 13603,
-    QUEST_2                                           = 13666,
-    QUEST_3                                           = 13673,
-    QUEST_4                                           = 13741,
-    QUEST_5                                           = 13746,
-    QUEST_6                                           = 13752,
-    QUEST_7                                           = 13757,
-    QUEST_8                                           = 13762,
-    QUEST_9                                           = 13768,
-    QUEST_10                                          = 13773,
-    QUEST_11                                          = 13778,
-    QUEST_12                                          = 13783,
+    SPELL_WARTSBGONE_LIP_BALM  = 62574,
+    SPELL_FROG_LOVE            = 62537,
+    SPELL_WARTS                = 62581,
+    NPC_MAIDEN_OF_ASHWOOD_LAKE = 33220,
+    MAIDEN_SPAWN
 };
-#define SAY_FREED "Can it really be? Free after all these years?"
 
+//Script for Lake Frog
 class npc_lake_frog : public CreatureScript
 {
 public:
+    npc_lake_frog(): CreatureScript("npc_lake_frog") { }
 
-    npc_lake_frog(): CreatureScript("npc_lake_frog"){}
-
-    struct npc_lake_frogAI : public ScriptedAI
+    struct npc_lake_frogAI : public FollowerAI // FollowerAI: Allows the npc to follow a target
     {
-        npc_lake_frogAI(Creature *creature) : ScriptedAI(creature) { }
-        
-        uint32 uiFollowTimer;
-        bool following;
- 
-        void Reset() 
+        npc_lake_frogAI(Creature *creature) : FollowerAI(creature) { }
+
+        uint32 uiFollowTimer;                  // Follow time (15 sec)
+        bool following;                        //Whether the frog is going to follow the player
+
+        void Reset()
         {
-            following = false;
-            uiFollowTimer = 25000;
+            following      = false;
+            uiFollowTimer  = 15000;            // 15 sec
         }
 
         void UpdateAI(uint32 diff)
         {
-            if(following)
+            if (following)
             {
-                if(uiFollowTimer <= diff)
+                if (uiFollowTimer <= diff)
                 {
-                    me->DespawnOrUnsummon();
+                    SetFollowComplete();
+                    me->DisappearAndDie();     // despawn
+                    me->Respawn(true);
+                    Reset();
                 }
-                else uiFollowTimer-=diff;
+				else uiFollowTimer-=diff;
             }
         }
 
         void ReceiveEmote(Player* player, uint32 emote)
         {
-            if (following)
-                return;
-                
-            if (player->HasAura(SPELL_WARTS))
+            if (following)                     // If the frog has already received a /kiss, nothing happens
                 return;
 
-            if ((player->GetQuestStatus(QUEST_1) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_2) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_3) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_4) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_5) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_6) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_7) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_8) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_9) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_10) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_11) == QUEST_STATUS_INCOMPLETE) ||
-                (player->GetQuestStatus(QUEST_12) == QUEST_STATUS_INCOMPLETE))
-            {    
-                if (emote == TEXT_EMOTE_KISS && me->IsWithinDistInMap(player, 30.0f))
+            if (emote==TEXT_EMOTE_KISS)        // If player use emote /kiss
+            {
+                if (!player->HasAura(SPELL_WARTSBGONE_LIP_BALM))
+                    player->AddAura(SPELL_WARTS,player);
+                else if (roll_chance_i(10))     // 10% chance spawn Maiden
                 {
-                    if (!player->HasAura(SPELL_WARTSBGONE_LIP_BALM))
-                        player->AddAura(SPELL_WARTS, player);
-
-                    else if (roll_chance_i(10))
-                    {
-                        if (Creature* maiden = player->SummonCreature(NPC_MAIDEN_OF_ASHWOOD_LAKE, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), 0, TEMPSUMMON_TIMED_DESPAWN, 30000))
-                            maiden->MonsterSay(SAY_FREED, LANG_UNIVERSAL, 0);
-                        me->DisappearAndDie();
-                    }
-                    else
-                    {
-                        player->RemoveAura(SPELL_WARTSBGONE_LIP_BALM);
-                        me->AddAura(SPELL_FROG_LOVE, me);
-                        me->GetMotionMaster()->MoveFollow(player, PET_FOLLOW_DIST, PET_FOLLOW_ANGLE);
-                        following = true;
-                    }
+                    player->SummonCreature(NPC_MAIDEN_OF_ASHWOOD_LAKE,me->GetPositionX(),me->GetPositionY(),me->GetPositionZ(),0,TEMPSUMMON_TIMED_DESPAWN,30000);
+                    me->DisappearAndDie();     // Despawn
+                    me->Respawn(true);
+                }
+                else
+                {
+                    player->RemoveAura(SPELL_WARTSBGONE_LIP_BALM); // It removes the buff set by the object of quest
+                    me->AddAura(SPELL_FROG_LOVE,me); // It adds the aura of a frog (hearts)
+                    StartFollow(player, 35, NULL); // The frog following the player
+                    following=true;
                 }
             }
         }
@@ -800,47 +773,24 @@ public:
     }
 };
 
+//Script for Maiden Ashwood
 #define MAIDEN_DEFAULT_TEXTID 14319
-#define MAIDEN_REWARD_TEXTID 14320
-#define GOSSIP_HELLO_MAIDEN "Glad to help, my lady. I'm told you were once the guardian of a fabled sword. Do you know where I might find it?"
+#define MAIDEN_REWARD_TEXTID  14320
+#define GOSSIP_HELLO_MAIDEN   "Delighted to have helped, ma'am. Were you once the guardian of a Send legendary. Would you know From where I could find it?"
 #define SPELL_SUMMON_ASHWOOD_BRAND 62554
-#define SAY_DESPAWN "And now, I must return to the waters of the lake."
 
 class npc_maiden_of_ashwood_lake : public CreatureScript
 {
 public:
-    npc_maiden_of_ashwood_lake(): CreatureScript("npc_maiden_of_ashwood_lake"){ }
-
-    struct npc_maiden_of_ashwood_lakeAI : public ScriptedAI
-    {
-        npc_maiden_of_ashwood_lakeAI(Creature *creature) : ScriptedAI(creature) { }
-        
-        uint32 uiTimer;
-		
-        void Reset() 
-        {
-            uiTimer = 30000;
-        }
-
-        void UpdateAI(uint32 diff)
-        {
-            if(uiTimer)
-            {
-                if(uiTimer <= diff)
-                {
-                    me->MonsterSay(SAY_DESPAWN, LANG_UNIVERSAL, 0); // We make her to say that on despawn.
-                }
-                else uiTimer-=diff;
-            }
-        }   
-    };
+    npc_maiden_of_ashwood_lake(): CreatureScript("npc_maiden_of_ashwood_lake") { }
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        if(!player->HasItemCount(44981, 1, true))
+        if (!pPlayer->HasItemCount(44981,1,true))
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_HELLO_MAIDEN, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
-            player->SEND_GOSSIP_MENU(MAIDEN_DEFAULT_TEXTID, creature->GetGUID());
+            player->SEND_GOSSIP_MENU(MAIDEN_DEFAULT_TEXTID, pCreature->GetGUID());
+            creature->DespawnOrUnsummon(10000);
             return true;
         }
 
@@ -850,22 +800,113 @@ public:
 
     bool OnGossipSelect(Player* player, Creature* creature, uint32 /*uiSender*/, uint32 uiAction)
     {
-        player->PlayerTalkClass->ClearMenus();
         switch(uiAction)
         {
             case GOSSIP_ACTION_INFO_DEF+1:
-                player->CastSpell(player, SPELL_SUMMON_ASHWOOD_BRAND, true);
+                player->CastSpell(player,SPELL_SUMMON_ASHWOOD_BRAND,true);
                 player->SEND_GOSSIP_MENU(MAIDEN_REWARD_TEXTID, creature->GetGUID());
                 break;
         }
         return true;
     }
+};
+
+// Quest: A Worthy weapon
+// When using the item:
+// Spawn gameobject 194239 <<
+// Spawn NPC 33723
+// Spawn gob 194238
+enum TalkMoDM
+{
+    NPC_TEXTID_MAIDEN_OF_DRAK_MAR_01      = 0,
+    NPC_TEXTID_MAIDEN_OF_DRAK_MAR_02      = 1,
+    NPC_TEXTID_MAIDEN_OF_DRAK_MAR_03      = 2,
+    NPC_TEXTID_MAIDEN_OF_DRAK_MAR_04      = 3
+};
+
+#define MAIDEN_OF_DRAK_MAR_TIMER_00 2000
+#define MAIDEN_OF_DRAK_MAR_TIMER_01 5000
+#define MAIDEN_OF_DRAK_MAR_TIMER_02 6000
+#define MAIDEN_OF_DRAK_MAR_TIMER_03 7000
+#define MAIDEN_OF_DRAK_MAR_TIMER_04 25000
+#define MAIDEN_OF_DRAK_MAR_GOB_01 194239
+#define MAIDEN_OF_DRAK_MAR_GOB_02 194238
+//Summon maiden :X: 4602.977 Y: -1600.141 Z: 156.7834 O: 0.7504916
+
+class npc_maiden_of_drak_mar : public CreatureScript
+{
+public:
+    npc_maiden_of_drak_mar(): CreatureScript("npc_maiden_of_drak_mar") { }
+
+    struct npc_maiden_of_drak_marAI : public ScriptedAI
+    {
+        uint32 phase;
+        uint32 uiPhaseTimer;
+        uint64 firstGobGuid;
+        uint64 secondGobGuid;
+
+        npc_maiden_of_drak_marAI(Creature *creature) : ScriptedAI(creature)
+        {
+            phase = 0;
+            uiPhaseTimer = MAIDEN_OF_DRAK_MAR_TIMER_00;
+            if (GameObject* go = me->SummonGameObject(MAIDEN_OF_DRAK_MAR_GOB_01, 4602.977f, -1600.141f, 156.7834f, 0.7504916f, 0, 0, 0, 0, 0))
+                firstGobGuid = go->GetGUID(); //Spawn leaf
+        }
+
+        void UpdateAI(uint32 diff)
+        {
+            if (uiPhaseTimer <= diff)
+            {
+                phase++;
+                    switch(phase)
+                    {
+                        case 1:
+                            Talk(NPC_TEXTID_MAIDEN_OF_DRAK_MAR_01);
+                            uiPhaseTimer = MAIDEN_OF_DRAK_MAR_TIMER_01;
+                            break;
+                        case 2:
+                            Talk(NPC_TEXTID_MAIDEN_OF_DRAK_MAR_02);
+                            uiPhaseTimer = MAIDEN_OF_DRAK_MAR_TIMER_02;
+                            break;
+                        case 3:
+                            Talk(NPC_TEXTID_MAIDEN_OF_DRAK_MAR_03);
+                            uiPhaseTimer = MAIDEN_OF_DRAK_MAR_TIMER_03;
+                            break;
+                        case 4:
+                            Talk(NPC_TEXTID_MAIDEN_OF_DRAK_MAR_04);
+                            if(GameObject* go = me->SummonGameObject(MAIDEN_OF_DRAK_MAR_GOB_02, 4603.351f, -1599.288f, 156.8822f, 2.234018f, 0, 0, 0, 0, 0))
+                                secondGobGuid = go->GetGUID(); //Spawn Blade GO
+                            uiPhaseTimer = MAIDEN_OF_DRAK_MAR_TIMER_04;
+                            break;
+                        case 5:
+                            if (GameObject* go = GameObject::GetGameObject(*me,firstGobGuid))
+                                go->RemoveFromWorld();// Despawn leaf
+                            if (GameObject* go = GameObject::GetGameObject(*me,secondGobGuid))
+                                go->RemoveFromWorld();// Despawn Blade GO
+                            me->DespawnOrUnsummon();// Despawn maiden
+                            break;
+                        default:
+                            if (GameObject* go = GameObject::GetGameObject(*me,firstGobGuid))
+                                go->RemoveFromWorld();
+                            if (GameObject* go = GameObject::GetGameObject(*me,secondGobGuid))
+                                go->RemoveFromWorld();
+                            me->DespawnOrUnsummon();
+                            break;
+                    }
+            }
+            else
+            {
+                uiPhaseTimer -= diff;
+            }
+        }
+    };
 
     CreatureAI* GetAI(Creature* creature) const
     {
-        return new npc_maiden_of_ashwood_lakeAI(creature);
+        return new npc_maiden_of_drak_marAI(creature);
     }
 };
+
 
 void AddSC_grizzly_hills()
 {
@@ -877,6 +918,7 @@ void AddSC_grizzly_hills()
     new npc_wounded_skirmisher();
     new npc_lightning_sentry();
     new npc_venture_co_straggler();
-    new npc_lake_frog();
-    new npc_maiden_of_ashwood_lake();
+    new npc_lake_frog;
+    new npc_maiden_of_ashwood_lake;
+    new npc_maiden_of_drak_mar;
 }
