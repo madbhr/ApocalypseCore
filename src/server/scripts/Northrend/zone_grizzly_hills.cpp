@@ -786,10 +786,10 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        if (!pPlayer->HasItemCount(44981,1,true))
+        if (!player->HasItemCount(44981,1,true))
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_HELLO_MAIDEN, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
-            player->SEND_GOSSIP_MENU(MAIDEN_DEFAULT_TEXTID, pCreature->GetGUID());
+            player->SEND_GOSSIP_MENU(MAIDEN_DEFAULT_TEXTID, creature->GetGUID());
             creature->DespawnOrUnsummon(10000);
             return true;
         }
