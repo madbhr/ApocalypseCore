@@ -1078,7 +1078,8 @@ class npc_muradin_gunship : public CreatureScript
                             Talk(SAY_BOARDING_SKYBREAKER_1);
                             break;
                         case EVENT_BOARDING_GUNSHIP:
-							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE){
+							if(_instance->GetBossState(DATA_GUNSHIP_EVENT) != DONE)
+							{
 								if (Creature* pSaurfang = ObjectAccessor::GetCreature(*me, _instance->GetData64(DATA_HIGH_OVERLORD_SAURFANG_NOT_VISUAL)))
 								{
 									pSaurfang->AI()->Talk(SAY_BOARDING_SKYBREAKER_SAURFANG);
