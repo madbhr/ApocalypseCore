@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2013 ApocalypseCore <http://www.apocalypsecore.tk/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -19,7 +20,7 @@
 #include "ScriptedCreature.h"
 #include "halls_of_reflection.h"
 
-enum Yells
+enum Texts
 {
     SAY_AGGRO                           = 0,
     SAY_SLAY                            = 1,
@@ -69,7 +70,7 @@ public:
             uiHopelessnessCount = 0;
 
             if (instance)
-                instance->SetData(DATA_FALRIC_EVENT, NOT_STARTED);
+                instance->SetBossState(DATA_FALRIC_EVENT, NOT_STARTED);
         }
         
         void DoDefilingHorror()
@@ -90,13 +91,13 @@ public:
 
         void JustReachedHome()
         {
-            instance->SetData(DATA_WAVE_STATE, FAIL);
+            instance->SetBossState(DATA_WAVE_STATE, FAIL);
         }
         void EnterCombat(Unit* /*who*/)
         {
             Talk(SAY_AGGRO);
             if (instance)
-                instance->SetData(DATA_FALRIC_EVENT, IN_PROGRESS);
+                instance->SetBossState(DATA_FALRIC_EVENT, IN_PROGRESS);
 
             events.ScheduleEvent(EVENT_QUIVERING_STRIKE, 23000);
             events.ScheduleEvent(EVENT_IMPENDING_DESPAIR, 9000);
@@ -108,7 +109,7 @@ public:
             Talk(SAY_DEATH);
 
             if (instance)
-                instance->SetData(DATA_FALRIC_EVENT, DONE);
+                instance->SetBossState(DATA_FALRIC_EVENT, DONE);
         }
 
         void KilledUnit(Unit* /*victim*/)

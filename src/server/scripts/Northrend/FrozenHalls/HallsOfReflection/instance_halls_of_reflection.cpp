@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2011-2013 ApocalypseCore <http://www.apocalypsecore.tk/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,6 +17,10 @@
  */
 
 #include "ScriptPCH.h"
+#include "ScriptMgr.h"
+#include "ScriptedCreature.h"
+#include "InstanceScript.h"
+#include "Player.h"
 #include "halls_of_reflection.h"
 
 /* Halls of Reflection encounters:
@@ -54,7 +59,7 @@ public:
 
     struct instance_halls_of_reflection_InstanceMapScript : public InstanceScript
     {
-        instance_halls_of_reflection_InstanceMapScript(Map* pMap) : InstanceScript(pMap) {};
+        instance_halls_of_reflection_InstanceMapScript(Map* map) : InstanceScript(map) {}
 
         bool m_bIsCall;
         bool WaveAdvanced;
@@ -150,10 +155,10 @@ public:
 
         void OnCreatureCreate(Creature* creature)
         {
-            Map::PlayerList const &players = instance->GetPlayers();
+            Map::PlayerList const& players = instance->GetPlayers();
             if (!players.isEmpty())
-                if (Player* pPlayer = players.begin()->getSource())
-                    uiTeamInInstance = pPlayer->GetTeam();
+                if (Player* player = players.begin()->getSource())
+                    uiTeamInInstance = player->GetTeam();
 
             switch(creature->GetEntry())
             {
@@ -838,7 +843,7 @@ public:
             }
         }
     };
-
+	
 };
 
 void AddSC_instance_halls_of_reflection()
