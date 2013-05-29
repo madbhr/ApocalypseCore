@@ -20,7 +20,7 @@
 #include "ScriptedCreature.h"
 #include "halls_of_reflection.h"
 
-enum Texts
+enum Yells
 {
     SAY_AGGRO                                     = 0,
     SAY_SLAY                                      = 1,
