@@ -33,11 +33,11 @@
 
 enum eEnum
 {
-    ENCOUNTER_WAVE_MERCENARY                      = 6,
-    ENCOUNTER_WAVE_FOOTMAN                        = 10,
-    ENCOUNTER_WAVE_RIFLEMAN                       = 6,
-    ENCOUNTER_WAVE_PRIEST                         = 6,
-    ENCOUNTER_WAVE_MAGE                           = 6,
+    ENCOUNTER_SHADOWY_MERCENARY = 6,
+    ENCOUNTER_SPECTRAL_FOOTMAN  = 10,
+    ENCOUNTER_TORTURED_RIFLEMAN = 6,
+    ENCOUNTER_GHOSTLY_PRIEST    = 6,
+    ENCOUNTER_PHANTOM_MAGE      = 6,
 };
 
 enum Events
@@ -192,23 +192,23 @@ public:
                     creature->SetHealth(20917000);
                     uiLichKing = creature->GetGUID();
                     break;                    
-				case NPC_WAVE_PRIEST:
+				case NPC_GHOSTLY_PRIEST:
 					creature->SetReactState(REACT_PASSIVE);
 					creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_SILENCED | UNIT_FLAG_PACIFIED | UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_IMMUNE_TO_PC);
 					break;
-				case NPC_WAVE_FOOTMAN:
+				case NPC_SPECTRAL_FOOTMAN:
 					creature->SetReactState(REACT_PASSIVE);
 					creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_SILENCED | UNIT_FLAG_PACIFIED | UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_IMMUNE_TO_PC);
 					break;
-				case NPC_WAVE_RIFLEMAN:
+				case NPC_TORTURED_RIFLEMAN:
 					creature->SetReactState(REACT_PASSIVE);
 					creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_SILENCED | UNIT_FLAG_PACIFIED | UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_IMMUNE_TO_PC);
 					break;
-				case NPC_WAVE_MAGE:
+				case NPC_PHANTOM_MAGE:
 					creature->SetReactState(REACT_PASSIVE);
 					creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_SILENCED | UNIT_FLAG_PACIFIED | UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_IMMUNE_TO_PC);
 					break;
-				case NPC_WAVE_MERCENARY:
+				case NPC_SHADOWY_MERCENARY:
 					creature->SetReactState(REACT_PASSIVE);
 					creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_SILENCED | UNIT_FLAG_PACIFIED | UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_IMMUNE_TO_PC);
 					break;
@@ -223,11 +223,11 @@ public:
 
             switch (creature->GetEntry())
             {
-                case NPC_WAVE_MERCENARY:
-                case NPC_WAVE_FOOTMAN:
-                case NPC_WAVE_RIFLEMAN:
-                case NPC_WAVE_PRIEST:
-                case NPC_WAVE_MAGE:
+                case NPC_SHADOWY_MERCENARY:
+                case NPC_SPECTRAL_FOOTMAN:
+                case NPC_TORTURED_RIFLEMAN:
+                case NPC_GHOSTLY_PRIEST:
+                case NPC_PHANTOM_MAGE:
                     WaveAlive = WaveAlive--;
                     break;
                 default:
@@ -634,73 +634,73 @@ public:
                  switch (i)
                  {
                      case 0:
-                         randsummon = NPC_WAVE_PRIEST; break;
+                         randsummon = NPC_GHOSTLY_PRIEST; break;
                      case 1:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 2:
-                         randsummon = NPC_WAVE_RIFLEMAN; break;
+                         randsummon = NPC_TORTURED_RIFLEMAN; break;
                      case 3:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 4:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 5:
-                         randsummon = NPC_WAVE_PRIEST; break;
+                         randsummon = NPC_GHOSTLY_PRIEST; break;
                      case 6:
-                         randsummon = NPC_WAVE_RIFLEMAN; break;
+                         randsummon = NPC_TORTURED_RIFLEMAN; break;
                      case 7:
-                         randsummon = NPC_WAVE_MERCENARY; break;
+                         randsummon = NPC_SHADOWY_MERCENARY; break;
                      case 8:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 9:
-                         randsummon = NPC_WAVE_RIFLEMAN; break;
+                         randsummon = NPC_TORTURED_RIFLEMAN; break;
                      case 10:
-                         randsummon = NPC_WAVE_MAGE; break;
+                         randsummon = NPC_PHANTOM_MAGE; break;
                      case 11:
-                         randsummon = NPC_WAVE_MAGE; break;
+                         randsummon = NPC_PHANTOM_MAGE; break;
                      case 12:
-                         randsummon = NPC_WAVE_PRIEST; break;
+                         randsummon = NPC_GHOSTLY_PRIEST; break;
                      case 13:
-                         randsummon = NPC_WAVE_MERCENARY; break;
+                         randsummon = NPC_SHADOWY_MERCENARY; break;
                      case 14:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 15:
-                         randsummon = NPC_WAVE_RIFLEMAN; break;
+                         randsummon = NPC_TORTURED_RIFLEMAN; break;
                      case 16:
-                         randsummon = NPC_WAVE_PRIEST; break;
+                         randsummon = NPC_GHOSTLY_PRIEST; break;
                      case 17:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 18:
-                         randsummon = NPC_WAVE_MAGE; break;
+                         randsummon = NPC_PHANTOM_MAGE; break;
                      case 19:
-                         randsummon = NPC_WAVE_RIFLEMAN; break;
+                         randsummon = NPC_TORTURED_RIFLEMAN; break;
                      case 20:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 21:
-                         randsummon = NPC_WAVE_MERCENARY; break;
+                         randsummon = NPC_SHADOWY_MERCENARY; break;
                      case 22:
-                         randsummon = NPC_WAVE_PRIEST; break;
+                         randsummon = NPC_GHOSTLY_PRIEST; break;
                      case 23:
-                         randsummon = NPC_WAVE_MAGE; break;
+                         randsummon = NPC_PHANTOM_MAGE; break;
                      case 24:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 25:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 26:
-                         randsummon = NPC_WAVE_MERCENARY; break;
+                         randsummon = NPC_SHADOWY_MERCENARY; break;
                      case 27:
-                         randsummon = NPC_WAVE_PRIEST; break;
+                         randsummon = NPC_GHOSTLY_PRIEST; break;
                      case 28:
-                         randsummon = NPC_WAVE_MAGE; break;
+                         randsummon = NPC_PHANTOM_MAGE; break;
                      case 29:
-                         randsummon = NPC_WAVE_PRIEST; break;
+                         randsummon = NPC_GHOSTLY_PRIEST; break;
                      case 30:
-                         randsummon = NPC_WAVE_MAGE; break;
+                         randsummon = NPC_PHANTOM_MAGE; break;
                      case 31:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 32:
-                         randsummon = NPC_WAVE_FOOTMAN; break;
+                         randsummon = NPC_SPECTRAL_FOOTMAN; break;
                      case 33:
-                         randsummon = NPC_WAVE_MERCENARY; break;
+                         randsummon = NPC_SHADOWY_MERCENARY; break;
                  }
 
                  if (Creature* pMarwyn = instance->GetCreature(uiMarwyn))

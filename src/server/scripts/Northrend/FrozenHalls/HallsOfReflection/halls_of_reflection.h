@@ -74,11 +74,11 @@ enum Creatures
     NPC_BARTLETT                                  = 37182,
     NPC_KORM                                      = 37833,
 
-    NPC_WAVE_MERCENARY                            = 38177,
-    NPC_WAVE_FOOTMAN                              = 38173,
-    NPC_WAVE_RIFLEMAN                             = 38176,
-    NPC_WAVE_PRIEST                               = 38175,
-    NPC_WAVE_MAGE                                 = 38172,
+    NPC_SHADOWY_MERCENARY                         = 38177,
+    NPC_SPECTRAL_FOOTMAN                          = 38173,
+    NPC_TORTURED_RIFLEMAN                         = 38176,
+    NPC_GHOSTLY_PRIEST                            = 38175,
+    NPC_PHANTOM_MAGE                              = 38172,
     NPC_WAVE_LOOT_DUMMY                           = 37906,
 
     NPC_ICE_WALL                                  = 37014,
