@@ -30,26 +30,28 @@ Script Data End */
 
 enum Spells
 {
-    SPELL_BANE                                = 48294,
-    H_SPELL_BANE                              = 59301,
-    SPELL_DARK_SLASH                          = 48292,
-    SPELL_FETID_ROT                           = 48291,
-    H_SPELL_FETID_ROT                         = 59300,
-    SPELL_SCREAMS_OF_THE_DEAD                 = 51750,
-    SPELL_SPIRIT_BURST                        = 48529,
-    H_SPELL_SPIRIT_BURST                      = 59305,
-    SPELL_SPIRIT_STRIKE                       = 48423,
-    H_SPELL_SPIRIT_STRIKE                     = 59304,
-    SPELL_ANCESTORS_VENGEANCE                 = 16939,
+    SPELL_BANE								= 48294,
+    H_SPELL_BANE							= 59301,
+    SPELL_DARK_SLASH						= 48292,
+    SPELL_FETID_ROT							= 48291,
+    H_SPELL_FETID_ROT						= 59300,
+    SPELL_SCREAMS_OF_THE_DEAD				= 51750,
+    SPELL_SPIRIT_BURST						= 48529,
+    H_SPELL_SPIRIT_BURST					= 59305,
+    SPELL_SPIRIT_STRIKE						= 48423,
+    H_SPELL_SPIRIT_STRIKE					= 59304,
+    SPELL_ANCESTORS_VENGEANCE				= 16939,
 
-    SPELL_SUMMON_AVENGING_SPIRIT              = 48592,
-    SPELL_SUMMON_SPIRIT_FOUNT                 = 48386,
+    SPELL_SUMMON_AVENGING_SPIRIT			= 48592,
+    SPELL_SUMMON_SPIRIT_FOUNT				= 48386,
 
-    SPELL_CHANNEL_SPIRIT_TO_YMIRON            = 48316,
-    SPELL_CHANNEL_YMIRON_TO_SPIRIT            = 48307,
+    SPELL_CHANNEL_SPIRIT_TO_YMIRON			= 48316,
+    SPELL_CHANNEL_YMIRON_TO_SPIRIT			= 48307,
 
-    SPELL_SPIRIT_FOUNT                        = 48380,
-    H_SPELL_SPIRIT_FOUNT                      = 59320
+    SPELL_SPIRIT_FOUNT						= 48380,
+    H_SPELL_SPIRIT_FOUNT					= 59320,
+
+	SPELL_SPIRIT_VISUAL						= 42744 // Probably the wrong spell. It looks similar.
 };
 
 //not in db
@@ -221,6 +223,7 @@ public:
                         temp->CastSpell(me, SPELL_CHANNEL_SPIRIT_TO_YMIRON, true);
                         temp->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
                         temp->SetDisableGravity(true);
+						temp->CastSpell(temp, SPELL_SPIRIT_VISUAL, true);
                         switch (m_uiActiveOrder[m_uiActivedNumber])
                         {
                             case 0: m_bIsActiveWithBJORN  = true; break;
@@ -324,6 +327,7 @@ public:
                             {
                                 temp->AddThreat(target, 0.0f);
                                 temp->AI()->AttackStart(target);
+								temp->CastSpell(temp, SPELL_CHANNEL_SPIRIT_TO_YMIRON, true);
                             }
                         }
                     }
