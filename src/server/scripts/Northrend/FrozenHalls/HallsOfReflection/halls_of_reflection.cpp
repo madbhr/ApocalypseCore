@@ -2319,7 +2319,7 @@ public:
         {
             if (!pWho)
                 return;
-            if (me->IsWithinDistInMap(who, 20) && who->HasAura(SPELL_QUELDELAR_AURA) && (summoned==false))
+            if (me->IsWithinDistInMap(pwho, 20) && pwho->HasAura(SPELL_QUELDELAR_AURA) && (summoned==false))
             {
                                 me->SetVisible(true);
                                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
