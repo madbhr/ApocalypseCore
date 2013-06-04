@@ -59,7 +59,7 @@ public:
 
     struct instance_halls_of_reflection_InstanceMapScript : public InstanceScript
     {
-        instance_halls_of_reflection_InstanceMapScript(Map* map) : InstanceScript(map) {}
+        instance_halls_of_reflection_InstanceMapScript(Map* pMap) : InstanceScript(pMap) {};
 
         bool m_bIsCall;
         bool WaveAdvanced;
@@ -155,10 +155,10 @@ public:
 
         void OnCreatureCreate(Creature* creature)
         {
-            Map::PlayerList const& players = instance->GetPlayers();
+            Map::PlayerList const &players = instance->GetPlayers();
             if (!players.isEmpty())
-                if (Player* player = players.begin()->getSource())
-                    uiTeamInInstance = player->GetTeam();
+                if (Player* pPlayer = players.begin()->getSource())
+                    uiTeamInInstance = pPlayer->GetTeam();
 
             switch(creature->GetEntry())
             {

@@ -2315,9 +2315,9 @@ public:
         {
         }
 
-                void MoveInLineOfSight(Unit* who)
-                {
-                        if (!who)
+        void MoveInLineOfSight(Unit* pWho)
+        {
+            if (!pWho)
                 return;
             if (me->IsWithinDistInMap(who, 20) && who->HasAura(SPELL_QUELDELAR_AURA) && (summoned==false))
             {
