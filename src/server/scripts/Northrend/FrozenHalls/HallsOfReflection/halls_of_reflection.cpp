@@ -2293,74 +2293,19 @@ public:
     }
     struct npc_queldelarAI  : public ScriptedAI
     {
-                uint32 Bladestorm;
-                uint32 Heroic_Strike;
-                uint32 Mortal_Strike;
-                uint32 Whirlind;
-                bool summoned;
-
-    void Reset()
-    {
-        Bladestorm = 10000;
-        Heroic_Strike = 5000;
-        Mortal_Strike = 7000;
-        Whirlind = 13000;
-                summoned = false;
-                me->SetVisible(false);
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
-                me->SetReactState(REACT_PASSIVE);
-    }
-
-        npc_queldelarAI(Creature *c) : ScriptedAI(c)
+        npc_queldelarAI(Creature* creature) : ScriptedAI(creature)
         {
         }
-
         void MoveInLineOfSight(Unit* pWho)
         {
             if (!pWho)
                 return;
-            if (me->IsWithinDistInMap(pwho, 20) && pwho->HasAura(SPELL_QUELDELAR_AURA) && (summoned==false))
+            if (me->IsWithinDistInMap(pWho, 20) && pWho->HasAura(SPELL_QUELDELAR_AURA))
             {
-                                me->SetVisible(true);
-                                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
-                                me->SetReactState(REACT_AGGRESSIVE);
-                                summoned=true;
-                        }
-                }
-
-                void UpdateAI(uint32 uiDiff)
-                {
-                        
-
-                        if (!UpdateVictim())
-                                return;
-
-                        if (Bladestorm <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Bladestorm);
-                                Bladestorm = 10000;
-                        } else Bladestorm -= uiDiff;
-
-                        if (Heroic_Strike <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Heroic_Strike);
-                                Heroic_Strike = 5000;
-                        } else Heroic_Strike -= uiDiff;
-
-                        if (Mortal_Strike <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Mortal_Strike);
-                                Mortal_Strike = 7000;
-                        } else Mortal_Strike -= uiDiff;
-
-                        if (Whirlind <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Whirlind);
-                                Whirlind = 13000;
-                        } else Whirlind -= uiDiff;
-
-                        DoMeleeAttackIfReady();
-                }
+                me->SummonCreature(NPC_QUELDELAR, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 60000);
+                me->DisappearAndDie();
+            }
+        }
     };
 };
 
