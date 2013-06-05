@@ -1530,6 +1530,14 @@ bool WorldObject::IsWithinLOSInMap(const WorldObject* obj) const
     if (!IsInMap(obj))
         return false;
 
+    //hack for ice tomb's gameobject
+    if (obj->GetTypeId() == TYPEID_UNIT)
+        if (obj->GetEntry() == 36980 /* Ice Tomb */)
+            return true;
+    if (GetTypeId() == TYPEID_UNIT)
+        if (GetEntry() == 36980 /* Ice Tomb */)
+            return true;
+
     float ox, oy, oz;
     obj->GetPosition(ox, oy, oz);
     return IsWithinLOS(ox, oy, oz) && GetMap()->IsInDynLOS(GetPositionX(), GetPositionY(), GetPositionZ(), ox, oy, oz);
