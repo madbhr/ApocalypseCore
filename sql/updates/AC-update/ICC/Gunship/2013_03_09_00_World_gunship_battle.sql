@@ -380,10 +380,6 @@ INSERT INTO `gameobject_loot_template` (`entry`,`item`,`ChanceOrQuestChance`,`lo
 (@Gunship10N,@emblem,100,1,0,2,2), -- Gunship Armory 2xemblems 10N
 (@Gunship10N,1,100,1,0,-@Ref10J,2); -- 2 from reference 10Normal
 
-DELETE FROM `creature_addon` WHERE `guid` IN (83459,78383,81170,81165,81531);
-DELETE FROM `gameobject_loot_template` WHERE `entry` IN (28045,28057,28072,28090);
-DELETE FROM `reference_loot_template` WHERE `entry` IN (34329,12036,34251,34263,34275);
-
 -- Make Muradin and Saufangs unattackable and unable to attack players (All difficulty modes)
 UPDATE `creature_template` SET `unit_flags`=2, `flags_extra`=2 WHERE `entry`=36948;
 UPDATE `creature_template` SET `unit_flags`=2, `flags_extra`=2 WHERE `entry`=36939;
