@@ -9,11 +9,6 @@ SET @NPC_LICH_KING_BOSS     := 37226;
 SET @NPC_QUEL_DELAR			:= 37158;
 
 -- Creature template updates
-UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_raging_ghoul' WHERE `entry`=36940;
-UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_raging_ghoul' WHERE `entry`=36940;
-UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_raging_ghoul' WHERE `entry`=36940;
-UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_raging_ghoul' WHERE `entry`=36940;
-
 UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_frostworn_general' WHERE `entry`=@NPC_FROSTWORN_GENERAL;
 UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_jaina_and_sylvana_hor_part2' WHERE `entry` IN (@NPC_JAINA_OUTRO, @NPC_SYLVANA_OUTRO);
 UPDATE `creature_template` SET `AIName`='', `Scriptname`='boss_lich_king_hor' WHERE `entry`=@NPC_LICH_KING_BOSS;
