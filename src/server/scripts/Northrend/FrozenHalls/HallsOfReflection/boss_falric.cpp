@@ -70,7 +70,7 @@ public:
             uiHopelessnessCount = 0;
 
             if (instance)
-                instance->SetBossState(DATA_FALRIC_EVENT, NOT_STARTED);
+                instance->SetData(DATA_FALRIC_EVENT, NOT_STARTED);
         }
         
         void DoDefilingHorror()
@@ -91,13 +91,13 @@ public:
 
         void JustReachedHome()
         {
-            instance->SetBossState(DATA_WAVE_STATE, FAIL);
+            instance->SetData(DATA_WAVE_STATE, FAIL);
         }
         void EnterCombat(Unit* /*who*/)
         {
             Talk(SAY_AGGRO);
             if (instance)
-                instance->SetBossState(DATA_FALRIC_EVENT, IN_PROGRESS);
+                instance->SetData(DATA_FALRIC_EVENT, IN_PROGRESS);
 
             events.ScheduleEvent(EVENT_QUIVERING_STRIKE, 23000);
             events.ScheduleEvent(EVENT_IMPENDING_DESPAIR, 9000);
@@ -109,7 +109,7 @@ public:
             Talk(SAY_DEATH);
 
             if (instance)
-                instance->SetBossState(DATA_FALRIC_EVENT, DONE);
+                instance->SetData(DATA_FALRIC_EVENT, DONE);
         }
 
         void KilledUnit(Unit* /*victim*/)

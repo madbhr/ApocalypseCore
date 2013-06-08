@@ -65,24 +65,24 @@ public:
             boss_horAI::Reset();
 
             if (instance)
-                instance->SetBossState(DATA_MARWYN_EVENT, NOT_STARTED);
+                instance->SetData(DATA_MARWYN_EVENT, NOT_STARTED);
         }
         
         void JustReachedHome()
         {
-            instance->SetBossState(DATA_WAVE_STATE, FAIL);
+            instance->SetData(DATA_WAVE_STATE, FAIL);
         }
 
         void EnterCombat(Unit* /*who*/)
         {
             Talk(SAY_AGGRO);
             if (instance)
-                instance->SetBossState(DATA_MARWYN_EVENT, IN_PROGRESS);
+                instance->SetData(DATA_MARWYN_EVENT, IN_PROGRESS);
 
-            events.ScheduleEvent(EVENT_OBLITERATE, 30000); /// @todo Check timer
+            events.ScheduleEvent(EVENT_OBLITERATE, 30000);          /// @todo Check timer
             events.ScheduleEvent(EVENT_WELL_OF_CORRUPTION, 13000);
             events.ScheduleEvent(EVENT_CORRUPTED_FLESH, 20000);
-            events.ScheduleEvent(EVENT_SHARED_SUFFERING, 20000); // I don't believe this spell is working properly atm, it will 1 shot a player when it ends
+            // events.ScheduleEvent(EVENT_SHARED_SUFFERING, 20000);    // I don't believe this spell is working properly atm, it will 1 shot a player when it ends
         }
 
         void JustDied(Unit* /*killer*/)
@@ -91,8 +91,8 @@ public:
 
             if (instance)
             {
-                instance->SetBossState(DATA_MARWYN_EVENT, DONE);
-                instance->SetBossState(DATA_WAVE_STATE, DONE);
+                instance->SetData(DATA_MARWYN_EVENT, DONE);
+                instance->SetData(DATA_WAVE_STATE, DONE);
             }
         }
 

@@ -1170,10 +1170,7 @@ public:
 
             DoMeleeAttackIfReady();
         }
-
-
     };
-
 };
 
 class npc_spectral_footman : public CreatureScript
@@ -1397,28 +1394,27 @@ public:
 
 enum GENERAL_EVENT
 {
-    SAY_GEN_AGGRO = 0,
-    SAY_GEN_DEATH = 1,
+    SAY_GEN_AGGRO                = 0,
+    SAY_GEN_DEATH                = 1,
 
-	//Frostsworn's Speels
-    SPELL_SHIELD_THROWN    = 69222,
-    H_SPELL_SHIELD_THROWN  = 73076,
-    SPELL_SPIKE            = 69184,
-    H_SPELL_SPIKE          = 70399,
-    SPELL_CLONE_NAME       = 57507,
-    SPELL_CLONE_MODEL      = 45204,
+    SPELL_SHIELD_THROWN          = 69222,
+    H_SPELL_SHIELD_THROWN        = 73076,
+    SPELL_SPIKE                  = 69184,
+    H_SPELL_SPIKE                = 70399,
+    SPELL_CLONE_NAME             = 57507,
+    SPELL_CLONE_MODEL            = 45204,
 
-    // Reflection's Spells
-    SPELL_BALEFUL_STRIKE   = 69933,
-    SPELL_SPIRIT_BURST     = 69900,
-    H_SPELL_BALEFUL_STRIKE = 70400,
-    H_SPELL_SPIRIT_BURST   = 73046,
+    // Reflection'Spells
+    SPELL_BALEFUL_STRIKE         = 69933,
+    SPELL_SPIRIT_BURST           = 69900,
+    H_SPELL_BALEFUL_STRIKE       = 70400,
+    H_SPELL_SPIRIT_BURST         = 73046,
 };
 
-class npc_frostsworn_general : public CreatureScript
+class npc_frostworn_general : public CreatureScript
 {
 public:
-    npc_frostsworn_general() : CreatureScript("npc_frostsworn_general") { }
+    npc_frostworn_general() : CreatureScript("npc_frostworn_general") { }
 
     struct npc_frostworn_generalAI : public ScriptedAI
     {
@@ -2084,7 +2080,6 @@ public:
                                 pCannoner->setFaction(me->getFaction());
                                 pCannoner->CastSpell(pCaveTarget, SPELL_FIRE_CANNON, true);
                             }
-
                         }
                     }
                     JumpNextStep(6000);
@@ -2287,80 +2282,25 @@ class npc_queldelar : public CreatureScript
 public:
     npc_queldelar() : CreatureScript("npc_queldelar") { }
 
-    CreatureAI* GetAI(Creature* creature) const
+    CreatureAI* GetAI(Creature* pCreature) const
     {
-        return new npc_queldelarAI(creature);
+        return new npc_queldelarAI(pCreature);
     }
     struct npc_queldelarAI  : public ScriptedAI
     {
-                uint32 Bladestorm;
-                uint32 Heroic_Strike;
-                uint32 Mortal_Strike;
-                uint32 Whirlind;
-                bool summoned;
-
-    void Reset()
-    {
-        Bladestorm = 10000;
-        Heroic_Strike = 5000;
-        Mortal_Strike = 7000;
-        Whirlind = 13000;
-                summoned = false;
-                me->SetVisible(false);
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
-                me->SetReactState(REACT_PASSIVE);
-    }
-
         npc_queldelarAI(Creature *c) : ScriptedAI(c)
         {
         }
-
         void MoveInLineOfSight(Unit* pWho)
         {
             if (!pWho)
                 return;
-            if (me->IsWithinDistInMap(pwho, 20) && pwho->HasAura(SPELL_QUELDELAR_AURA) && (summoned==false))
+            if (me->IsWithinDistInMap(pWho, 20) && pWho->HasAura(SPELL_QUELDELAR_AURA))
             {
-                                me->SetVisible(true);
-                                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
-                                me->SetReactState(REACT_AGGRESSIVE);
-                                summoned=true;
-                        }
-                }
-
-                void UpdateAI(uint32 uiDiff)
-                {
-                        
-
-                        if (!UpdateVictim())
-                                return;
-
-                        if (Bladestorm <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Bladestorm);
-                                Bladestorm = 10000;
-                        } else Bladestorm -= uiDiff;
-
-                        if (Heroic_Strike <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Heroic_Strike);
-                                Heroic_Strike = 5000;
-                        } else Heroic_Strike -= uiDiff;
-
-                        if (Mortal_Strike <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Mortal_Strike);
-                                Mortal_Strike = 7000;
-                        } else Mortal_Strike -= uiDiff;
-
-                        if (Whirlind <= uiDiff)
-                        {
-                                DoCast(me->getVictim(), Whirlind);
-                                Whirlind = 13000;
-                        } else Whirlind -= uiDiff;
-
-                        DoMeleeAttackIfReady();
-                }
+                me->SummonCreature(NPC_QUELDELAR, me->GetPositionX(), me->GetPositionY(), me->GetPositionZ(), me->GetOrientation(), TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 60000);
+                me->DisappearAndDie();
+            }
+        }
     };
 };
 
@@ -2376,7 +2316,7 @@ void AddSC_halls_of_reflection()
     new npc_spectral_footman();
     new npc_tortured_rifleman();
     new at_hor_waves_restarter();
-    new npc_frostsworn_general();
+    new npc_frostworn_general();
     new npc_spiritual_reflection();
     new npc_queldelar();
 }
