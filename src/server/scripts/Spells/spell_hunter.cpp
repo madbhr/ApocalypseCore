@@ -483,7 +483,7 @@ class spell_hun_pet_carrion_feeder : public SpellScriptLoader
 
             bool Load()
             {
-                if (!GetCaster()->isPet())
+                if (!GetCaster()->IsPet())
                     return false;
                 return true;
             }
@@ -540,7 +540,7 @@ class spell_hun_pet_heart_of_the_phoenix : public SpellScriptLoader
 
             bool Load()
             {
-                if (!GetCaster()->isPet())
+                if (!GetCaster()->IsPet())
                     return false;
                 return true;
             }
