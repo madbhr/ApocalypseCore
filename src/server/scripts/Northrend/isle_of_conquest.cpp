@@ -143,7 +143,7 @@ public:
 
           if (uiMortalStrikeTimer < diff)
           {
-              if (Unit *pVictim = me->getVictim())
+              if (Unit *pVictim = me->GetVictim())
                   DoCast(pVictim, SPELL_MORTAL_STRIKE);
               uiMortalStrikeTimer = urand(10*IN_MILLISECONDS,20*IN_MILLISECONDS);
           }
@@ -172,7 +172,7 @@ public:
           if (uiRage <= diff)
           {
               if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 50)
-                  DoCast(me->getVictim(), SPELL_RAGE);                  
+                  DoCast(me->GetVictim(), SPELL_RAGE);                  
           } else uiRage -= diff;
           
           // Chequea si la creatura no esta al exterior del edificio (Antibugers >3)
@@ -183,7 +183,7 @@ public:
 
               if (me->GetEntry()== NPC_OVERLORD_AGMAR && (x > 1348 || x < 1283 || y < -800 || y > -730))
               {
-                  if (Unit *pVictim = me->getVictim())
+                  if (Unit *pVictim = me->GetVictim())
                       me->Kill(pVictim);
                   me->MonsterSay("Antibugers:$N, No querias bugearlo :)", LANG_UNIVERSAL, me->GetGUID());
                   EnterEvadeMode();
@@ -193,7 +193,7 @@ public:
               {
                   EnterEvadeMode();
                   me->MonsterSay("Antibugers:$N, No querias bugearlo :)", LANG_UNIVERSAL, me->GetGUID());
-                  if (Unit *pVictim = me->getVictim())
+                  if (Unit *pVictim = me->GetVictim())
                       me->Kill(pVictim);                   
               }
               uiResetTimer = 200;

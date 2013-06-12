@@ -989,7 +989,7 @@ class spell_warl_shadow_bite : public SpellScriptLoader
                 if(!caster) { return; };
 
                 // break if our caster is not a pet
-                if(!(caster->GetTypeId() == TYPEID_UNIT && caster->ToCreature()->isPet())) { return; };
+                if(!(caster->GetTypeId() == TYPEID_UNIT && caster->ToCreature()->IsPet())) { return; };
 
                 // break if pet has no owner and/or owner is not a player
                 Unit *owner = caster->GetOwner();

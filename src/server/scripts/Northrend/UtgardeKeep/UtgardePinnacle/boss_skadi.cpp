@@ -220,7 +220,7 @@ public:
 
 					if (Creature* grauf = me->GetMap()->GetCreature(instance->GetData64(DATA_MOB_GRAUF)))
 					{
-						if (!grauf->isAlive())
+						if (!grauf->IsAlive())
 							grauf->Respawn(true);
 					}
 					else
@@ -233,7 +233,7 @@ public:
 		
 		void DamageTaken(Unit* /*attacker*/, uint32 & damage)
 		{
-			if (!me->isInCombat() || Phase != SKADI || me->IsMounted())
+			if (!me->IsInCombat() || Phase != SKADI || me->IsMounted())
 				damage = 0;
 		}
 
@@ -248,7 +248,7 @@ public:
 			{
 				if (Creature* grauf = me->GetMap()->GetCreature(instance->GetData64(DATA_MOB_GRAUF)))
 				{
-					if (!grauf->isAlive())
+					if (!grauf->IsAlive())
 						grauf->Respawn(true);
 				}
 				else

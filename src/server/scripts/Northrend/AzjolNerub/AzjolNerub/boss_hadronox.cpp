@@ -381,7 +381,7 @@ class boss_hadronox : public CreatureScript
             // When Hadronox kills any enemy (that includes a player) he will regain 10% of HP if the target had Leech Poison applied.
             void KilledUnit(Unit* Victim)
             {
-                if (!Victim || !Victim->HasAura(SPELL_LEECH_POISON) || !me->isAlive())
+                if (!Victim || !Victim->HasAura(SPELL_LEECH_POISON) || !me->IsAlive())
                     return;
 
                 me->ModifyHealth(uint32(me->CountPctFromMaxHealth(10)));
@@ -786,7 +786,7 @@ class npc_anub_ar_champion : public CreatureScript
 
                 _events.Update(diff);
 
-                if (_canSpellInterrupt && me->getVictim() && me->getVictim()->IsNonMeleeSpellCasted(false, false, true))
+                if (_canSpellInterrupt && me->GetVictim() && me->GetVictim()->IsNonMeleeSpellCasted(false, false, true))
                 {
                     DoCastVictim(SPELL_PUMMEL);
                     _canSpellInterrupt = false;

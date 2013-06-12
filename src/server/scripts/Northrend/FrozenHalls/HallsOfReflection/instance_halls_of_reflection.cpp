@@ -152,7 +152,7 @@ public:
         {
             Map::PlayerList const &players = instance->GetPlayers();
             if (!players.isEmpty())
-                if (Player* pPlayer = players.begin()->getSource())
+                if (Player* pPlayer = players.begin()->GetSource())
                     uiTeamInInstance = pPlayer->GetTeam();
 
             switch(creature->GetEntry())
@@ -413,13 +413,13 @@ public:
 
 						Map::PlayerList const &players = instance->GetPlayers();
                         for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
-							itr->getSource()->CompletedAchievement(AchievHoRN);
+							itr->GetSource()->CompletedAchievement(AchievHoRN);
 
                         if(instance->IsHeroic())
                         {
 							AchievementEntry const* AchievHoRH = sAchievementStore.LookupEntry(ACHIEVHORH);
                             for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
-								itr->getSource()->CompletedAchievement(AchievHoRH);
+								itr->GetSource()->CompletedAchievement(AchievHoRH);
                             DoCastSpellOnPlayers(SPELL_ACHIEV_CHECK);
                             DoStopTimedAchievement(ACHIEVEMENT_TIMED_TYPE_EVENT, ACHIEVNOTRETREATINGEVENT);
                         }

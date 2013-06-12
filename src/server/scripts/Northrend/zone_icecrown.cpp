@@ -67,7 +67,7 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        if (creature->isQuestGiver())
+        if (creature->IsQuestGiver())
             player->PrepareQuestMenu(creature->GetGUID());
 
         if (player->GetQuestStatus(QUEST_THE_STORY_THUS_FAR) == QUEST_STATUS_INCOMPLETE)
@@ -1135,7 +1135,7 @@ class npc_valiant : public CreatureScript
 
         bool OnGossipHello(Player* player, Creature* creature)
         {
-            if (creature->isQuestGiver())
+            if (creature->IsQuestGiver())
                 player->PrepareQuestMenu(creature->GetGUID());
             
             if (((player->GetQuestStatus(QUEST_GRAND_MELEE_1) == QUEST_STATUS_INCOMPLETE) ||
@@ -1151,7 +1151,7 @@ class npc_valiant : public CreatureScript
                 (player->HasAura(RIDE_VEHICLE)) &&
                 (player->HasAura(PLAYER_ON_TOURNAMENT_MOUNT)) &&
                 (player->HasAura(LANCE_EQUIPPED)) &&
-                (!player->isInCombat()))
+                (!player->IsInCombat()))
             {
                 if ((creature->GetEntry() == NPC_STORMWIND_VALIANT) || (creature->GetEntry() == NPC_DARNASSUS_VALIANT) ||
                     (creature->GetEntry() == NPC_EXODAR_VALIANT) || (creature->GetEntry() == NPC_GNOMEREGAN_VALIANT) ||
