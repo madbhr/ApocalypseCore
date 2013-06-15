@@ -337,9 +337,7 @@ void AnticheatMgr::BuildReport(Player* player,uint8 reportType)
         {
             if (m_Players[key].GetAverage() > 0.5f)
             {
-                str = "Possible cheater found: " + std::string(player->GetName().c_str());
                 sWorld->BanCharacter(player->GetName(), "1h", str, "Detectado por Sistema AntiHack");
-                sWorld->SendWorldText(LANG_BAN_CHEATER, player->GetName());
             }
         }
         else
