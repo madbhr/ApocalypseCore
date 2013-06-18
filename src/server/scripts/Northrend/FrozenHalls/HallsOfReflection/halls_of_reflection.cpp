@@ -566,7 +566,7 @@ public:
                     // Spawn LK in front of door, and make him move to the sword.
                     if (Creature* pLichKing = me->SummonCreature(NPC_LICH_KING_EVENT, LichKingSpawnPos, TEMPSUMMON_MANUAL_DESPAWN))
                     {
-                        pLichKing->SetUnitMovementFlags(MOVEMENTFLAG_WALKING);
+                        pLichking->SetWalk(true);
                         pLichKing->GetMotionMaster()->MovePoint(0, LichKingMoveThronePos);
                         pLichKing->SetReactState(REACT_PASSIVE);
                         uiLichKing = pLichKing->GetGUID();
@@ -646,7 +646,7 @@ public:
                     {
                         pFalric->CastSpell(pFalric, SPELL_BOSS_SPAWN_AURA, true);
                         pFalric->SetVisible(true);
-						pFalric->SetUnitMovementFlags(MOVEMENTFLAG_WALKING);
+						pFalric->SetWalk(true);
                         pFalric->GetMotionMaster()->MovePoint(0, 5283.309f, 2031.173f, 709.319f);
 						pFalric->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_READY1H);
 						pFalric->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -655,7 +655,7 @@ public:
                     {
                         pMarwyn->CastSpell(pMarwyn, SPELL_BOSS_SPAWN_AURA, true);
                         pMarwyn->SetVisible(true);
-						pMarwyn->SetUnitMovementFlags(MOVEMENTFLAG_WALKING);
+						pMarwyn->SetWalk(true);
                         pMarwyn->GetMotionMaster()->MovePoint(0, 5335.585f, 1981.439f, 709.319f);
 						pMarwyn->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_READY1H);
 						pMarwyn->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -682,7 +682,7 @@ public:
                     {
                         if(GameObject* pGate = pInstance->instance->GetGameObject(pInstance->GetData64(DATA_FROSTWORN_DOOR)))
                             pGate->SetGoState(GO_STATE_ACTIVE);
-                        pLichKing->SetUnitMovementFlags(MOVEMENTFLAG_WALKING);
+                        pLichKing->SetWalk(true);
                         pLichKing->GetMotionMaster()->MovePoint(0, LichKingMoveAwayPos);
                     }
 
@@ -740,7 +740,7 @@ public:
                    // Spawn LK in front of door, and make him move to the sword.
                     if (Creature* pLichKing = me->SummonCreature(NPC_LICH_KING_EVENT, LichKingSpawnPos, TEMPSUMMON_MANUAL_DESPAWN))
                     {
-                        pLichKing->SetUnitMovementFlags(MOVEMENTFLAG_WALKING);
+                        pLichKing->SetWalk(true);
                         pLichKing->GetMotionMaster()->MovePoint(0, LichKingMoveThronePos);
                         pLichKing->SetReactState(REACT_PASSIVE);
                         uiLichKing = pLichKing->GetGUID();
