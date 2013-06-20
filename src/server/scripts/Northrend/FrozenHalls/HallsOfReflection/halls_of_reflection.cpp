@@ -566,7 +566,7 @@ public:
                     // Spawn LK in front of door, and make him move to the sword.
                     if (Creature* pLichKing = me->SummonCreature(NPC_LICH_KING_EVENT, LichKingSpawnPos, TEMPSUMMON_MANUAL_DESPAWN))
                     {
-                        pLichking->SetWalk(true);
+                        pLichKing->SetWalk(true);
                         pLichKing->GetMotionMaster()->MovePoint(0, LichKingMoveThronePos);
                         pLichKing->SetReactState(REACT_PASSIVE);
                         uiLichKing = pLichKing->GetGUID();
@@ -682,8 +682,8 @@ public:
                     {
                         if(GameObject* pGate = pInstance->instance->GetGameObject(pInstance->GetData64(DATA_FROSTWORN_DOOR)))
                             pGate->SetGoState(GO_STATE_ACTIVE);
-                        pLichKing->SetWalk(true);
-                        pLichKing->GetMotionMaster()->MovePoint(0, LichKingMoveAwayPos);
+							pLichKing->SetWalk(true);
+							pLichKing->GetMotionMaster()->MovePoint(0, LichKingMoveAwayPos);
                     }
 
                     events.ScheduleEvent(EVENT_INTRO_LK_9, 9000);
