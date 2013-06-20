@@ -775,7 +775,7 @@ uint32 Transport::AddNPCPassenger(uint32 tguid, uint32 entry, float x, float y, 
         o + GetOrientation());
 
     creature->SetHomePosition(creature->GetPositionX(), creature->GetPositionY(), creature->GetPositionZ(), creature->GetOrientation());
-    creature->SetTransportHomePosition(creature->m_movementInfo.transport.pos.pos);
+    creature->SetTransportHomePosition(creature->m_movementInfo.transport.pos);
 
     if (!creature->IsPositionValid())
     {
