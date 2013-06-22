@@ -1710,7 +1710,7 @@ public:
     }
 };
 
-uint32 const FetchIngredients[21] [4] =
+uint32 const FetchIngredients[21][4] =
 {
     { SPELL_FETCH_KNOTROOT,                   SPELL_HAVE_KNOTROOT,                   ITEM_KNOTROOT,                   SAY_KNOTROOT                   },
     { SPELL_FETCH_PICKLED_EAGLE_EGG,          SPELL_HAVE_PICKLED_EAGLE_EGG,          ITEM_PICKLED_EAGLE_EGG,          SAY_PICKLED_EAGLE_EGG          },
@@ -1811,7 +1811,6 @@ class spell_random_ingredient : public SpellScriptLoader
             {
                 if (Player* player = GetHitPlayer())
                 {
-
                     uint8 ingredient = 0;
 
                     switch (GetSpellInfo()->Id)
