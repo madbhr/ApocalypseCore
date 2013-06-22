@@ -1389,9 +1389,9 @@ class npc_korkron_axethrower_rifleman : public CreatureScript
                 if (attacktimer <= diff)
                 {
                     if(me->GetEntry() == NPC_GB_KORKRON_AXETHROWER)
-                        DoCast(me->GetVictim(), SPELL_HURL_AXE);
+                        DoCastVictim(SPELL_HURL_AXE);
                     else if(me->GetEntry() == NPC_GB_SKYBREAKER_RIFLEMAN)
-                        DoCast(me->GetVictim(), SPELL_SHOOT);
+                        DoCastVictim(SPELL_SHOOT);
                     attacktimer = urand(6000, 15000);
                 } else attacktimer -= diff;
 
