@@ -17412,9 +17412,19 @@ bool Unit::SetDisableGravity(bool disable, bool /*packetOnly = false*/)
         return false;
 
     if (disable)
+    {
         AddUnitMovementFlag(MOVEMENTFLAG_DISABLE_GRAVITY);
+        RemoveUnitMovementFlag(MOVEMENTFLAG_FALLING);
+    }
     else
+    {
         RemoveUnitMovementFlag(MOVEMENTFLAG_DISABLE_GRAVITY);
+        if (!HasUnitMovementFlag(MOVEMENTFLAG_CAN_FLY))
+        {
+            m_movementInfo.SetFallTime(0);
+            AddUnitMovementFlag(MOVEMENTFLAG_FALLING);
+        }
+    }
 
     return true;
 }
@@ -17438,9 +17448,19 @@ bool Unit::SetCanFly(bool enable)
         return false;
 
     if (enable)
+    {
         AddUnitMovementFlag(MOVEMENTFLAG_CAN_FLY);
+        RemoveUnitMovementFlag(MOVEMENTFLAG_FALLING);
+    }
     else
-        RemoveUnitMovementFlag(MOVEMENTFLAG_CAN_FLY);
+    {
+        RemoveUnitMovementFlag(MOVEMENTFLAG_CAN_FLY | MOVEMENTFLAG_MASK_MOVING_FLY);
+        if (!IsLevitating())
+        {
+            m_movementInfo.SetFallTime(0);
+            AddUnitMovementFlag(MOVEMENTFLAG_FALLING);
+        }
+    }
 
     return true;
 }
