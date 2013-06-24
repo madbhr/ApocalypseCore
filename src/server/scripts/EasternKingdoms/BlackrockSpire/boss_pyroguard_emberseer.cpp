@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2008-2013 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2006-2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,8 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "ObjectMgr.h"
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
+#include "Player.h"
+#include "Spell.h"
 #include "blackrock_spire.h"
 
 enum Text
@@ -30,7 +32,7 @@ enum Text
 
 enum Spells
 {
-    SPELL_ENCAGED_EMBERSEER         = 15282,
+    SPELL_ENCAGED_EMBERSEER         = 15282, // Self on spawn
     SPELL_FIRE_SHIELD_TRIGGER       = 13377, // Self on spawn missing from 335 dbc triggers SPELL_FIRE_SHIELD every 3 sec
     SPELL_FIRE_SHIELD               = 13376, // Triggered by SPELL_FIRE_SHIELD_TRIGGER
     SPELL_FREEZE_ANIM               = 16245, // Self on event start
@@ -43,7 +45,9 @@ enum Spells
     // Blackhand Incarcerator Spells
     SPELL_ENCAGE_EMBERSEER          = 15281, // Emberseer on spawn
     SPELL_STRIKE                    = 15580, // Combat
-    SPELL_ENCAGE                    = 16045  // Combat
+    SPELL_ENCAGE                    = 16045, // Combat
+    // Cast on player by altar
+    SPELL_EMBERSEER_START           = 16533
 };
 
 enum Events
@@ -69,11 +73,6 @@ class boss_pyroguard_emberseer : public CreatureScript
 {
 public:
     boss_pyroguard_emberseer() : CreatureScript("boss_pyroguard_emberseer") { }
-
-    CreatureAI* GetAI(Creature* creature) const
-    {
-        return new boss_pyroguard_emberseerAI(creature);
-    }
 
     struct boss_pyroguard_emberseerAI : public BossAI
     {
@@ -166,8 +165,10 @@ public:
         void SpellHit(Unit* /*caster*/, SpellInfo const* spell)
         {
             if (spell->Id == SPELL_ENCAGE_EMBERSEER)
-                if (me->GetAuraCount(SPELL_ENCAGED_EMBERSEER) == 0)
-                    DoCast(me, SPELL_ENCAGED_EMBERSEER);
+            {
+                if (!me->GetAuraCount(SPELL_ENCAGED_EMBERSEER))
+                    me->CastSpell(me, SPELL_ENCAGED_EMBERSEER);
+            }
 
             if (spell->Id == SPELL_EMBERSEER_GROWING_TRIGGER)
             {
@@ -185,7 +186,6 @@ public:
                     AttackStart(me->SelectNearestPlayer(30.0f));
                 }
             }
-
         }
 
        void OpenDoors(bool Boss_Killed)
@@ -246,11 +246,13 @@ public:
                             altar->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_INTERACT_COND);
                         break;
                     case EVENT_FIRE_SHIELD:
+                        // #### Spell isn't doing any damage ??? ####
                         DoCast(SPELL_FIRE_SHIELD);
                         events.ScheduleEvent(SPELL_FIRE_SHIELD, 3000);
                         break;
                     case EVENT_PLAYER_CHECK:
-                        // TODO add check to ensure all players are clicking altar
+                        // #### TODO Check to see if all players in instance have aura SPELL_EMBERSEER_START ####
+                        // #### If true do following events ####
                         events.ScheduleEvent(EVENT_PRE_FIGHT_1, 1000);
                         instance->SetBossState(DATA_PYROGAURD_EMBERSEER, IN_PROGRESS);
                         break;
@@ -285,6 +287,11 @@ public:
             DoMeleeAttackIfReady();
         }
     };
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new boss_pyroguard_emberseerAI(creature);
+    }
 };
 
 /*####
