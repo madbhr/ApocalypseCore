@@ -82,7 +82,7 @@ public:
             events.ScheduleEvent(EVENT_OBLITERATE, 30000);          /// @todo Check timer
             events.ScheduleEvent(EVENT_WELL_OF_CORRUPTION, 13000);
             events.ScheduleEvent(EVENT_CORRUPTED_FLESH, 20000);
-            // events.ScheduleEvent(EVENT_SHARED_SUFFERING, 20000);    // I don't believe this spell is working properly atm, it will 1 shot a player when it ends
+            events.ScheduleEvent(EVENT_SHARED_SUFFERING, 20000);    // I don't believe this spell is working properly atm, it will 1 shot a player when it ends
         }
 
         void JustDied(Unit* /*killer*/)
