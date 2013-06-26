@@ -34,7 +34,6 @@ enum Spells
     SPELL_QUIVERING_STRIKE                        = 72422,
     SPELL_IMPENDING_DESPAIR                       = 72426,
     SPELL_DEFILING_HORROR                         = 72435,
-	H_SPELL_DEFILING_HORROR                       = 72452,
     SPELL_HOPELESSNESS                            = 72395,
     H_SPELL_HOPELESSNESS                          = 72390, /// @todo not in dbc. Add in DB.
 };
@@ -71,27 +70,6 @@ public:
 
             if (instance)
                 instance->SetData(DATA_FALRIC_EVENT, NOT_STARTED);
-        }
-        
-        void DoDefilingHorror()
-        {
-            std::list<Unit*> targetList;
-            SelectTargetList(targetList, 5, SELECT_TARGET_RANDOM, 100.0f, true);
-
-            if (targetList.empty())
-                return;
- 
-            for (std::list<Unit*>::const_iterator i = targetList.begin(); i != targetList.end(); ++i)
-            {
-                if ((*i))
-                   if (me->IsValidAttackTarget((*i)))
-                       me->AddAura(DUNGEON_MODE(SPELL_DEFILING_HORROR, H_SPELL_DEFILING_HORROR), (*i));
-            }
-        }
-
-        void JustReachedHome()
-        {
-            instance->SetData(DATA_WAVE_STATE, FAIL);
         }
 
         void EnterCombat(Unit* /*who*/)

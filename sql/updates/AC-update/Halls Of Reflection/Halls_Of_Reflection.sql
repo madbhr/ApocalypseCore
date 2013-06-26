@@ -31,6 +31,7 @@ INSERT INTO `creature` (`guid`, `id`, `map`, `spawnMask`, `phaseMask`, `modelid`
 (202293,37779,668,3,1,30687,1,5232.69,1931.52,707.77,0.82,86400,0.00,0,75600,0,0,0,0,0);
 
 -- Update NPC's ScriptName
+UPDATE `creature_template` SET `AIName`='', `Scriptname`='boss_lich_king_hor' WHERE `entry`=37226;
 UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_the_lich_king_hor' WHERE `entry`=36954;
 UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_jaina_and_sylvana_hor_part2' WHERE `entry` IN (36955, 37554);
 UPDATE `creature_template` SET `AIName`='', `Scriptname`='npc_raging_gnoul' WHERE `entry`=36940;

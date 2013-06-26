@@ -21,26 +21,25 @@
 
 enum
 {
-    SPELL_WINTER                        = 69780,
-    SPELL_FURY_OF_FROSTMOURNE           = 70063,
-    SPELL_SOUL_REAPER                   = 73797,
-    SPELL_RAISE_DEAD                    = 69818,
-    SPELL_ICE_PRISON                    = 69708,
-    SPELL_DARK_ARROW                    = 70194,
-    SPELL_HARVEST_SOUL                  = 70070,
-    SPELL_PAIN_AND_SUFFERING            = 74115,
- 
+    SPELL_WINTER                       = 69780,
+    SPELL_FURY_OF_FROSTMOURNE          = 70063,
+    SPELL_SOUL_REAPER                  = 73797,
+    SPELL_RAISE_DEAD                   = 69818,
+    SPELL_ICE_PRISON                   = 69708,
+    SPELL_DARK_ARROW                   = 70194,
+    SPELL_HARVEST_SOUL                 = 70070, 
+
     //Raging gnoul
-    SPELL_EMERGE_VISUAL                 = 50142,
-    SPELL_GHOUL_JUMP                    = 70150,
+    SPELL_EMERGE_VISUAL                = 50142,
+    SPELL_GNOUL_JUMP                   = 70150,
 
     //Witch Doctor
-    SPELL_COURSE_OF_DOOM                = 70144,
-    H_SPELL_COURSE_OF_DOOM              = 70183,
-    SPELL_SHADOW_BOLT_VOLLEY            = 70145,
-    H_SPELL_SHADOW_BOLT_VOLLEY          = 70184,
-    SPELL_SHADOW_BOLT                   = 70080,
-    H_SPELL_SHADOW_BOLT                 = 70182,
+    SPELL_COURSE_OF_DOOM               = 70144,
+    H_SPELL_COURSE_OF_DOOM             = 70183,
+    SPELL_SHADOW_BOLT_VOLLEY           = 70145,
+    H_SPELL_SHADOW_BOLT_VOLLEY         = 70184,
+    SPELL_SHADOW_BOLT                  = 70080,
+    H_SPELL_SHADOW_BOLT                = 70182,
 
     //Lumbering Abomination
     SPELL_ABON_STRIKE                  = 40505,
@@ -302,7 +301,7 @@ public:
                DoMeleeAttackIfReady();
            }
 
-           if(me->isInCombat() && pInstance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
+           if(me->IsInCombat() && pInstance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
            {
                npc_escortAI::EnterEvadeMode();
            }
@@ -419,7 +418,7 @@ public:
            ScriptedAI::AttackStart(who);
        }
 
-       void UpdateAI(const uint32 diff)
+       void UpdateAI(uint32 diff)
        {
            if(!pInstance)
                return;
@@ -523,7 +522,7 @@ public:
            ScriptedAI::AttackStart(who);
        }
 
-       void UpdateAI(const uint32 diff)
+       void UpdateAI(uint32 diff)
        {
            if(!pInstance)
                return;
@@ -611,7 +610,7 @@ public:
            uiStrikeTimer = 6000;
        }
 
-       void UpdateAI(const uint32 diff)
+       void UpdateAI(uint32 diff)
        {
            if(!pInstance) return;
 
