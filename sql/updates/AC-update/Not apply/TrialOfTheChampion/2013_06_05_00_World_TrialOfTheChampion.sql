@@ -589,3 +589,4 @@ DELETE FROM `pickpocketing_loot_template` WHERE entry = 94839 AND item IN (54291
 INSERT INTO pickpocketing_loot_template (entry, item, ChanceOrQuestChance, lootmode, groupid, mincountOrRef, maxcount) values('94839','54291','80','1','0','4','5'); -- A Steamy Romance Novel: Blue Moon
 INSERT INTO pickpocketing_loot_template (entry, item, ChanceOrQuestChance, lootmode, groupid, mincountOrRef, maxcount) values('94839','43575','40','1','0','1','2');
 INSERT INTO pickpocketing_loot_template (entry, item, ChanceOrQuestChance, lootmode, groupid, mincountOrRef, maxcount) values('94839','33447','40','1','0','1','2');
+
