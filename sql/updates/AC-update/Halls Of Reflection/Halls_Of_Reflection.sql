@@ -1,4 +1,4 @@
---- Fixed Halls of Reflection 
+-- Fixed Halls of Reflection 
 -- Update: Halls Of Reflection 95%
 
 SET @CGUID := 209183; 
