@@ -338,8 +338,8 @@ float Object::GetFloatValue(uint16 index) const
 
 uint8 Object::GetByteValue(uint16 index, uint8 offset) const
 {
-    //ASSERT(index < m_valuesCount || PrintIndexError(index, false));
-    //ASSERT(offset < 4);
+    ASSERT(index < m_valuesCount || PrintIndexError(index, false));
+    ASSERT(offset < 4);
     return *(((uint8*)&m_uint32Values[index])+offset);
 }
 
