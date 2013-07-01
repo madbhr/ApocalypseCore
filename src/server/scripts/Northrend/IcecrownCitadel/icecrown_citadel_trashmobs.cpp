@@ -24,6 +24,9 @@ enum TrashSpells
     SPELL_CRYPTSCARABS                      = 70965,
     SPELL_DARKMENDING                       = 71020,
     SPELL_WEBWRAP                           = 70980,
+	
+	    //Servant of the Throne
+    SPELL_GLACIALBLAST                      = 71029,
 };
 enum TrashEvents
 {
@@ -31,6 +34,9 @@ enum TrashEvents
     EVENT_CRYPTSCARABS          = 1,
     EVENT_DARKMENDING           = 2,
     EVENT_WEBWRAP               = 3,
+	
+    //Servant of the Throne
+    EVENT_GLACIALBLAST          = 6,
 };
 
 class npc_NerubarBroodkeeper : public CreatureScript
@@ -97,8 +103,61 @@ public:
         return new npc_NerubarBroodkeeperAI(creature);
     }
 };
+
+class npc_ServantoftheThrone : public CreatureScript
+{
+public:
+    npc_ServantoftheThrone() : CreatureScript("npc_ServantoftheThrone") { }
+    struct npc_ServantoftheThroneAI: public ScriptedAI
+    {
+        npc_ServantoftheThroneAI(Creature* creature) : ScriptedAI(creature)
+        {
+        }
+        EventMap events;
+
+        void Reset()
+        {
+            events.Reset();
+        }
+
+        void EnterCombat(Unit* who)
+        {
+            events.ScheduleEvent(EVENT_GLACIALBLAST, 13000);
+        }
+
+        void UpdateAI(uint32 diff)
+        {
+             //Return since we have no target
+            if (!UpdateVictim())
+                return;
+
+            events.Update(diff);
+
+            if (me->HasUnitState(UNIT_STATE_CASTING))
+                return;
+
+            while(uint32 eventId = events.ExecuteEvent())
+            {
+                switch(eventId)
+                {
+                    case EVENT_GLACIALBLAST:
+                        DoCastAOE(SPELL_GLACIALBLAST);
+                        events.RescheduleEvent(EVENT_GLACIALBLAST, 8000);
+                        break;
+                }
+            }
+            DoMeleeAttackIfReady();
+        }
+    };
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_ServantoftheThroneAI(creature);
+    }
+};
 	
 void AddSC_icecrown_citadel_trashmobs()
 {
     new npc_NerubarBroodkeeper();
+    new npc_ServantoftheThrone();
 }
