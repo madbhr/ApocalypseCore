@@ -166,13 +166,3 @@ DELETE FROM `disables` WHERE `sourceType`=4 AND `entry`=4244;
 DELETE FROM `achievement_criteria_data` WHERE `criteria_id`=4244 AND `type`=11;
 INSERT INTO `achievement_criteria_data` (`criteria_id`,`type`,`value1`,`value2`,`ScriptName`) VALUES
 (4244,11,0,0, 'achievement_hadronox_denied');
-
--- Add crusher reinforcement groups to summon groups
-DELETE FROM `creature_summon_groups` WHERE `summonerId` IN (@LARGE_TRIGGER_AOI);
-INSERT INTO `creature_summon_groups` (`summonerId`,`summonerType`,`groupId`,`entry`,`position_x`,`position_y`,`position_z`,`orientation`,`summonType`,`summonTime`) VALUES
-(@LARGE_TRIGGER_AOI,0,0,@Crusher,476.3005,620.2604,771.4703,5.4,8,0),
-(@LARGE_TRIGGER_AOI,0,0,@NoSpellNecromancer,476.3005,620.2604,771.4703,5.4,8,0),
-(@LARGE_TRIGGER_AOI,0,0,@NoSpellChampion,476.3005,620.2604,771.4703,5.4,8,0),
-(@LARGE_TRIGGER_AOI,0,1,@Crusher,584.8197,618.6154,771.4528,3.9,8,0),
-(@LARGE_TRIGGER_AOI,0,1,@NoSpellNecromancer,584.8197,618.6154,771.4528,3.9,8,0),
-(@LARGE_TRIGGER_AOI,0,1,@NoSpellFiend,584.8197,618.6154,771.4528,3.9,8,0);
