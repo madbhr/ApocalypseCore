@@ -22,3 +22,8 @@ UPDATE `spell_group` SET `spell_id` = 20912 WHERE `id` = 1092 and `spell_id` = 2
 -- spell_warl_shadow_bite
 DELETE FROM spell_script_names WHERE spell_id IN (-54049,54049,54050,54051,54052,54053);
 INSERT INTO spell_script_names (spell_id, ScriptName) VALUES (-54049, 'spell_warl_shadow_bite');
+
+-- spell_dk_raise_dead
+DELETE FROM `spell_script_names` WHERE `spell_id` = -46584;
+INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES
+(-46584, "spell_dk_raise_dead");
