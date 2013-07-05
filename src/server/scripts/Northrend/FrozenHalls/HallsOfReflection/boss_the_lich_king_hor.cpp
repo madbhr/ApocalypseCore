@@ -21,38 +21,39 @@
 
 enum
 {
-    SPELL_WINTER                       = 69780,
-    SPELL_FURY_OF_FROSTMOURNE          = 70063,
-    SPELL_SOUL_REAPER                  = 73797,
-    SPELL_RAISE_DEAD                   = 69818,
-    SPELL_ICE_PRISON                   = 69708,
-    SPELL_DARK_ARROW                   = 70194,
-    SPELL_HARVEST_SOUL                 = 70070, 
+   SPELL_WINTER                        = 69780,
+   SPELL_FURY_OF_FROSTMOURNE           = 70063,
+   SPELL_SOUL_REAPER                   = 73797,
+   SPELL_RAISE_DEAD                    = 69818,
+   SPELL_ICE_PRISON                    = 69708,
+   SPELL_DARK_ARROW                    = 70194,
+   SPELL_HARVEST_SOUL                  = 70070,
+   SPELL_PAIN_AND_SUFFERING            = 74115,
 
-    //Raging gnoul
-    SPELL_EMERGE_VISUAL                = 50142,
-    SPELL_GNOUL_JUMP                   = 70150,
+   //Raging gnoul
+   SPELL_EMERGE_VISUAL                 = 50142,
+   SPELL_GHOUL_JUMP                    = 70150,
 
-    //Witch Doctor
-    SPELL_COURSE_OF_DOOM               = 70144,
-    H_SPELL_COURSE_OF_DOOM             = 70183,
-    SPELL_SHADOW_BOLT_VOLLEY           = 70145,
-    H_SPELL_SHADOW_BOLT_VOLLEY         = 70184,
-    SPELL_SHADOW_BOLT                  = 70080,
-    H_SPELL_SHADOW_BOLT                = 70182,
+   //Witch Doctor
+   SPELL_COURSE_OF_DOOM                = 70144,
+   H_SPELL_COURSE_OF_DOOM              = 70183,
+   SPELL_SHADOW_BOLT_VOLLEY            = 70145,
+   H_SPELL_SHADOW_BOLT_VOLLEY          = 70184,
+   SPELL_SHADOW_BOLT                   = 70080,
+   H_SPELL_SHADOW_BOLT                 = 70182,
 
-    //Lumbering Abomination
-    SPELL_ABON_STRIKE                  = 40505,
-    SPELL_VOMIT_SPRAY                  = 70176,
-    H_SPELL_VOMIT_SPRAY                = 70181,
+   //Lumbering Abomination
+   SPELL_ABON_STRIKE                  = 40505,
+   SPELL_VOMIT_SPRAY                  = 70176,
+   H_SPELL_VOMIT_SPRAY                = 70181,
 
-    SAY_LICH_KING_WALL_01              = 5,
-    SAY_LICH_KING_WALL_02              = 6,
-    SAY_LICH_KING_GNOUL                = 7,
-    SAY_LICH_KING_ABON                 = 8,
-    SAY_LICH_KING_WINTER               = 9,
-    SAY_LICH_KING_END_DUN              = 10,
-    SAY_LICH_KING_WIN                  = 11,
+   SAY_LICH_KING_WALL_01              = 5,
+   SAY_LICH_KING_WALL_02              = 6,
+   SAY_LICH_KING_GNOUL                = 7,
+   SAY_LICH_KING_ABON                 = 8,
+   SAY_LICH_KING_WINTER               = 9,
+   SAY_LICH_KING_END_DUN              = 10,
+   SAY_LICH_KING_WIN                  = 11,
 };
 
 class boss_lich_king_hor : public CreatureScript
@@ -78,20 +79,22 @@ public:
        uint32 StepTimer;
        uint32 uiWall;
        bool StartEscort;
+       bool WipedGroup;
        bool NonFight;
        float walkSpeed;
 
        void Reset()
        {
-           if (!pInstance)
+           if(!pInstance)
                return;
            NonFight = false;
            StartEscort = false;
-           walkSpeed = 1.0f;
+           WipedGroup = false;
+           walkSpeed = 0.8f;
            uiWall = 0;
        }
 
-       void JustDied(Unit* pKiller) { }
+       void JustDied(Unit* /*killer*/) { }
 
        void WaypointReached(uint32 i)
        {
@@ -184,9 +187,8 @@ public:
                    ++Step;
                    break;
                case 2:
-                   DoCast(me, SPELL_WINTER);
-                   Talk(SAY_LICH_KING_WINTER);
-                   me->SetSpeed(MOVE_WALK, walkSpeed, true);
+                   me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+                   me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE );
                    StepTimer = 1000;
                    ++Step;
                    break;
@@ -197,6 +199,10 @@ public:
                case 4:
                    CallGuard(NPC_RISEN_WITCH_DOCTOR);
                    pInstance->SetData(DATA_ICE_WALL_1, DONE);
+				   // DoCast(me, SPELL_PAIN_AND_SUFFERING); Spell is currently broken, it also does damage to people in front of you.
+                   DoCast(me, SPELL_WINTER);
+                   Talk(SAY_LICH_KING_WINTER);
+                   me->SetSpeed(MOVE_WALK, walkSpeed, true);
                    StepTimer = 100;
                    Step = 0;
                    uiWall = 0;
@@ -301,11 +307,6 @@ public:
                DoMeleeAttackIfReady();
            }
 
-           if(me->IsInCombat() && pInstance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
-           {
-               npc_escortAI::EnterEvadeMode();
-           }
-
            // Start chase for leader
            if(pInstance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS && StartEscort != true)
            {
@@ -324,14 +325,15 @@ public:
            // Leader caught, wipe
            if (Creature* pLider = ((Creature*)Unit::GetUnit((*me), pInstance->GetData64(DATA_ESCAPE_LIDER))))
            {
-               if (pLider->IsWithinDistInMap(me, 2.0f) && pInstance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
+               if (!WipedGroup && pLider->IsWithinDistInMap(me, 2.0f) && pInstance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
                {
+                    WipedGroup = true;
                    me->setActive(false);
-                   SetEscortPaused(false);
+                   SetEscortPaused(true);
                    me->StopMoving();
                    Talk(SAY_LICH_KING_WIN);
-                   me->CastSpell(me, SPELL_FURY_OF_FROSTMOURNE, false);
-                   me->DealDamage(pLider, pLider->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
+                   me->CastSpell((Unit*)NULL, SPELL_FURY_OF_FROSTMOURNE, TRIGGERED_NONE);
+                   me->DealDamage(pLider, pLider->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false); // Probably a hack
                }
            }
 
@@ -380,84 +382,82 @@ public:
    {
        npc_raging_gnoulAI(Creature *creature) : ScriptedAI(creature)
        {
-           pInstance = (InstanceScript*)creature->GetInstanceScript();
+           instance = (InstanceScript*)creature->GetInstanceScript();
            me->setActive(true);
            Reset();
        }
 
-       InstanceScript* pInstance;
-       uint32 EmergeTimer;
-       bool Emerge;
-       bool Jumped;
-       uint64 uiLiderGUID;
+       InstanceScript* instance;
+       uint32 _emergeTimer;
+       bool _doEmerge;
+       bool _doJump;
+       uint64 _liderGuid;
 
        void Reset()
        {
            DoCast(me, SPELL_EMERGE_VISUAL);
-           EmergeTimer = 4000;
-           Emerge = false;
-           Jumped = false;
+           _emergeTimer = 4000;
+           _doEmerge = false;
+           _doJump = false;
        }
 
-       void JustDied(Unit* pKiller)
+       void JustDied(Unit* /*killer*/)
        {
-           if(!pInstance)
-               return;
+           if (!instance)
+                  return;
 
-           pInstance->SetData(DATA_SUMMONS, 0);
+           instance->SetData(DATA_SUMMONS, 0);
        }
 
        void AttackStart(Unit* who)
        {
            if (!who)
-               return;
+                  return;
 
-           if(Emerge == false)
-               return;
+           if (_doEmerge == false)
+                  return;
 
            ScriptedAI::AttackStart(who);
        }
 
        void UpdateAI(uint32 diff)
        {
-           if(!pInstance)
-               return;
+           if (!instance)
+                  return;
 
-           if(pInstance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
+           if (instance->GetData(DATA_LICHKING_EVENT) == IN_PROGRESS)
            {
-               uiLiderGUID = pInstance->GetData64(DATA_ESCAPE_LIDER);
-               Creature* pLider = ((Creature*)Unit::GetUnit((*me), uiLiderGUID));
+                  _liderGuid = instance->GetData64(DATA_ESCAPE_LIDER);
+                  Creature* lider = ((Creature*)Unit::GetUnit((*me), _liderGuid));
 
-               if(Emerge != true)
+               if (_doEmerge != true)
                {
-                   if(EmergeTimer < diff)
+                   if (_emergeTimer < diff)
                    {
-                       //me->RemoveFlag(SPLINEFLAG_WALKING | MOVEMENTFLAG_WALKING, true);
-                       Emerge = true;
-                       uiLiderGUID = pInstance->GetData64(DATA_ESCAPE_LIDER);
-                       if(pLider)
+                          _doEmerge = true;
+                          _liderGuid = instance->GetData64(DATA_ESCAPE_LIDER);
+                       if (lider)
                        {
-                           DoResetThreat();
-                           me->AI()->AttackStart(pLider);
-                           me->GetMotionMaster()->Clear();
-                           me->GetMotionMaster()->MoveChase(pLider);
+                              DoResetThreat();                           
+                              me->GetMotionMaster()->Clear();
+                              me->GetMotionMaster()->MoveChase(lider);
                        }
                    }
                    else
-                       EmergeTimer -= diff;
+                          _emergeTimer -= diff;
                }
 
-               if(Unit *target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f))
+               if (Unit *target = SelectTarget(SELECT_TARGET_RANDOM, 0, 50.0f))
                {
-                   if(!Jumped && me->IsWithinDistInMap(target, 30.0f) && !me->IsWithinDistInMap(target, 5.0f))
+                   if (!_doJump && me->IsWithinDistInMap(target, 30.0f) && !me->IsWithinDistInMap(target, 5.0f))
                    {
-                       Jumped = true;
-                       DoCast(target, SPELL_GNOUL_JUMP);
+                          _doJump = true;
+                          DoCast(target, SPELL_GHOUL_JUMP);
                    }
                }
            }
-           else if (pInstance->GetData(DATA_LICHKING_EVENT) == FAIL || pInstance->GetData(DATA_LICHKING_EVENT) == NOT_STARTED)
-               me->DespawnOrUnsummon();
+           else if (instance->GetData(DATA_LICHKING_EVENT) == FAIL || instance->GetData(DATA_LICHKING_EVENT) == NOT_STARTED)
+                       me->DespawnOrUnsummon();
 
            DoMeleeAttackIfReady();
        }
@@ -502,7 +502,7 @@ public:
            Emerge = false;
        }
 
-       void JustDied(Unit* pKiller)
+       void JustDied(Unit* /*killer*/)
        {
            if(!pInstance)
                return;
@@ -538,7 +538,7 @@ public:
                        if(Creature* pLider = ((Creature*)Unit::GetUnit((*me), uiLiderGUID)))
                        {
                            DoResetThreat();
-                           me->AI()->AttackStart(pLider);
+                           //me->AI()->AttackStart(pLider);
                            me->GetMotionMaster()->Clear();
                            me->GetMotionMaster()->MoveChase(pLider);
                        }
@@ -623,7 +623,7 @@ public:
                    if(Creature* pLider = ((Creature*)Unit::GetUnit((*me), uiLiderGUID)))
                    {
                        DoResetThreat();
-                       me->AI()->AttackStart(pLider);
+                       //me->AI()->AttackStart(pLider);
                        me->GetMotionMaster()->Clear();
                        me->GetMotionMaster()->MoveChase(pLider);
                    }
@@ -634,21 +634,25 @@ public:
                    if(Unit *target = SelectTarget(SELECT_TARGET_TOPAGGRO))
                        DoCast(target, SPELL_ABON_STRIKE);
                    uiStrikeTimer = urand(7000, 9000);
-               } else uiStrikeTimer -= diff;
+               } 
+			   else
+				   uiStrikeTimer -= diff;
 
                if (uiVomitTimer < diff)
                {
                    if(Unit *target = SelectTarget(SELECT_TARGET_TOPAGGRO))
                        DoCast(target, SPELL_VOMIT_SPRAY);
                    uiVomitTimer = urand(15000, 20000);
-               } else uiVomitTimer -= diff;
+               } 
+			   else 
+					uiVomitTimer -= diff;
            }
            else if (pInstance->GetData(DATA_LICHKING_EVENT) == FAIL || pInstance->GetData(DATA_LICHKING_EVENT) == NOT_STARTED)
                me->DespawnOrUnsummon();
            DoMeleeAttackIfReady();
        }
 
-       void JustDied(Unit* pKiller)
+       void JustDied(Unit* /*killer*/)
        {
            if(!pInstance)
                return;

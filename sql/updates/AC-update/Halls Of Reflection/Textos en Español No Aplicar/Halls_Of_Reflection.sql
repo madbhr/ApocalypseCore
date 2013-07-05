@@ -1,6 +1,7 @@
--- Textos
-DELETE FROM `script_texts` WHERE `entry` BETWEEN -1594540 AND -1594430;
-INSERT INTO `script_texts` (`entry`,`content_default`,`content_loc8`,`sound`,`TYPE`,`LANGUAGE`,`emote`,`COMMENT`) VALUES
+-- Textos HoR
+-- Falta actulizar las id de los loc y las casillas
+DELETE FROM `creature_text` WHERE `entry` BETWEEN -1594540 AND -1594430;
+INSERT INTO `creature_text` (`entry`,`content_default`,`content_loc8`,`sound`,`TYPE`,`LANGUAGE`,`emote`,`COMMENT`) VALUES
 (-1594473, 'Insensata, buscas lo que asesine tiempo atras. Ahora no es mas que un fantasma, un eco lejano en mi mente.', '', 17229,1,0,0, '67234'),
 (-1594474, 'No cometere el mismo error, Sylvanas. Esta vez no habra escapatoria. Fallaste al servirme como no muerta. Ahora lo que te queda es el olvido.', '', 17228,1,0,0, '67234'),
 
