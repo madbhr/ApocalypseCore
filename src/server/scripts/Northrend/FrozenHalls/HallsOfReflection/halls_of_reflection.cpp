@@ -214,7 +214,7 @@ enum Events
     EVENT_ICE_SHOT				= 73,
 };
 
-enum eEnum
+enum Misc
 {
     ACTION_START_INTRO,
     ACTION_SKIP_INTRO,

@@ -34,8 +34,7 @@ Script Data End */
 
 #define SPELL_POISONED_SPEAR    DUNGEON_MODE(50255, 59331)
 
-//Yell
-enum eYells
+enum Yells
 {
     SAY_AGGRO                           = 0,
     SAY_KILL                            = 1,
@@ -127,15 +126,15 @@ static Position Location[] =
     {413.9327f, -540.9407f, 138.2614f, 0},		//71
 };
 
-enum eCombatPhase
+enum CombatPhase
 {
     FLYING,
     SKADI
 };
 
-enum eSpells
+enum Spells
 {
-    //Skadi Spells
+    // Skadi Spells
     SPELL_CRUSH             = 50234,
     SPELL_WHIRLWIND         = 50228,
     SPELL_RAPID_FIRE        = 56570,
@@ -143,17 +142,17 @@ enum eSpells
     SPELL_FREEZING_CLOUD    = 47579,
 };
 
-enum eCreature
+enum Creatures
 {
-    CREATURE_YMIRJAR_WARRIOR       = 26690,
-    CREATURE_YMIRJAR_WITCH_DOCTOR  = 26691,
-    CREATURE_YMIRJAR_HARPOONER     = 26692,
-    CREATURE_GRAUF                 = 26893,
-    CREATURE_TRIGGER               = 28351,
+    NPC_YMIRJAR_WARRIOR       = 26690,
+    NPC_YMIRJAR_WITCH_DOCTOR  = 26691,
+    NPC_YMIRJAR_HARPOONER     = 26692,
+    NPC_GRAUF                 = 26893,
+    NPC_TRIGGER               = 28351,
     DATA_MOUNT                     = 27043,
 };
 
-enum eAchievments
+enum Achievments
 {
     ACHIEV_TIMED_START_EVENT                      = 17726,
 };
@@ -191,7 +190,7 @@ public:
         uint8  m_uiSpellHitCount;
 		bool m_bSaidEmote;
 
-        eCombatPhase Phase;
+        CombatPhase Phase;
 
         void Reset()
         {
@@ -277,7 +276,7 @@ public:
                 me->GetMotionMaster()->MoveJump(Location[0].GetPositionX(), Location[0].GetPositionY(), Location[0].GetPositionZ(), 5.0f, 10.0f);
                 me->SetWalk(false);
                 m_uiMountTimer = 1000;
-                Summons.DespawnEntry(CREATURE_GRAUF);
+                Summons.DespawnEntry(NPC_GRAUF);
             }
         }
 
@@ -307,7 +306,7 @@ public:
 
         void SummonedCreatureDespawn(Creature* summoned)
         {
-            if (summoned->GetEntry() == CREATURE_GRAUF)
+            if (summoned->GetEntry() == NPC_GRAUF)
                 m_uiGraufGUID = 0;
             Summons.Despawn(summoned);
         }

@@ -47,7 +47,7 @@ EndContentData */
 #define GOSSIP_ARETE_ITEM6 "Let's finish this!"
 #define GOSSIP_ARETE_ITEM7 "That's quite a tale, Lord-Commander."
 
-enum eArete
+enum Arete
 {
     GOSSIP_TEXTID_ARETE1        = 13525,
     GOSSIP_TEXTID_ARETE2        = 13526,
@@ -124,7 +124,7 @@ public:
 ## npc_squire_david
 ######*/
 
-enum eSquireDavid
+enum SquireDavid
 {
     QUEST_THE_ASPIRANT_S_CHALLENGE_H                    = 13680,
     QUEST_THE_ASPIRANT_S_CHALLENGE_A                    = 13679,
@@ -176,7 +176,7 @@ public:
 ## npc_argent_valiant
 ######*/
 
-enum eArgentValiant
+enum ArgentValiant
 {
     SPELL_CHARGE                = 63010,
     SPELL_SHIELD_BREAKER        = 65147,
@@ -257,7 +257,7 @@ public:
 ## npc_guardian_pavilion
 ######*/
 
-enum eGuardianPavilion
+enum GuardianPavilion
 {
     SPELL_TRESPASSER_H                            = 63987,
     AREA_SUNREAVER_PAVILION                       = 4676,
@@ -307,7 +307,7 @@ public:
 ## npc_vereth_the_cunning
 ######*/
 
-enum eVerethTheCunning
+enum VerethTheCunning
 {
     NPC_GEIST_RETURN_BUNNY_KC   = 31049,
     NPC_LITHE_STALKER           = 30894,
