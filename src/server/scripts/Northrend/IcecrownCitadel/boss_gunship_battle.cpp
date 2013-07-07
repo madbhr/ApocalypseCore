@@ -1961,7 +1961,7 @@ class npc_zafod_boombox : public CreatureScript
     public:
         npc_zafod_boombox() : CreatureScript("npc_zafod_boombox") { }
 
-        bool OnGossipHello(Player* pPlayer, Creature* pCreature)
+        bool OnGossipHello(Player* pPlayer, Creature* pCreature) OVERRIDE
         {
             // Maybe this isn't blizzlike but I can't find any spell in the DBCs
             if (pPlayer->GetItemCount(49278, false) == 0)
@@ -1970,7 +1970,7 @@ class npc_zafod_boombox : public CreatureScript
             return true;
         }
 
-        bool OnGossipSelect(Player* player, Creature* pCreature, uint32 /*sender*/, uint32 action)
+        bool OnGossipSelect(Player* player, Creature* pCreature, uint32 /*sender*/, uint32 action) OVERRIDE
         {
             player->PlayerTalkClass->ClearMenus();
             player->CLOSE_GOSSIP_MENU();
@@ -2008,7 +2008,7 @@ class npc_saurfang_gunship : public CreatureScript
     public:
         npc_saurfang_gunship() : CreatureScript("npc_saurfang_gunship") { }
 
-        bool OnGossipHello(Player* player, Creature* pCreature)
+        bool OnGossipHello(Player* player, Creature* pCreature) OVERRIDE
         {
             InstanceScript* pInstance = pCreature->GetInstanceScript();
             if (pInstance && pInstance->GetData(DATA_TEAM_IN_INSTANCE) == HORDE)
@@ -2027,7 +2027,7 @@ class npc_saurfang_gunship : public CreatureScript
             return false;
         }
 
-        bool OnGossipSelect(Player* player, Creature* pCreature, uint32 /*sender*/, uint32 action)
+        bool OnGossipSelect(Player* player, Creature* pCreature, uint32 /*sender*/, uint32 action) OVERRIDE
         {
             InstanceScript* instance = pCreature->GetInstanceScript();
             player->PlayerTalkClass->ClearMenus();
@@ -2544,7 +2544,7 @@ class npc_korkron_primalist: public CreatureScript
                 events.ScheduleEvent(EVENT_HEAL, 20000); // TODO: Fix the timers
             }
 
-            void MoveInLineOfSight(Unit* who)
+            void MoveInLineOfSight(Unit* who)  OVERRIDE
             {
                 if (!instance)
                     return;
@@ -2663,7 +2663,7 @@ class npc_korkron_defender: public CreatureScript
                 events.ScheduleEvent(EVENT_SUNDER_ARMOR, 15000);
             }
 
-            void MoveInLineOfSight(Unit* who)
+            void MoveInLineOfSight(Unit* who)  OVERRIDE
             {
                 if (!instance)
                     return;
@@ -2776,7 +2776,7 @@ class npc_skybreaker_vindicator: public CreatureScript
                 events.ScheduleEvent(EVENT_HOLY_WRATH, 20000); // TODO: Fix the timers
             }
 
-            void MoveInLineOfSight(Unit* who)
+            void MoveInLineOfSight(Unit* who)  OVERRIDE
             {
                 if (!instance)
                     return;
@@ -2882,7 +2882,7 @@ class npc_skybreaker_protector: public CreatureScript
                 events.ScheduleEvent(EVENT_SUNDER_ARMOR, 15000);
             }
 
-            void MoveInLineOfSight(Unit* who)
+            void MoveInLineOfSight(Unit* who)  OVERRIDE
             {
                 if (!instance)
                     return;
@@ -3002,7 +3002,7 @@ class npc_icc_spire_frostwyrm: public CreatureScript
                 events.ScheduleEvent(EVENT_CLEAVE, 10000);
             }
 
-            void MoveInLineOfSight(Unit* who)
+            void MoveInLineOfSight(Unit* who)  OVERRIDE
             {
                 if (!instance)
                     return;

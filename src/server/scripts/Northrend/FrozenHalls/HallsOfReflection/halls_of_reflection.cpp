@@ -1220,7 +1220,7 @@ public:
                 Talk(SAY_TRASH_DEATH);
         }
 
-        void EnterCombat(Unit* /*who*/)) OVERRIDE
+        void EnterCombat(Unit* /*who*/) OVERRIDE
         {
             events.ScheduleEvent(EVENT_SPECTRAL_STRIKE, 5000, 0, PHASE_ONE); // TODO: adjust timers
             events.ScheduleEvent(EVENT_SHIELD_BASH, 10000, 0, PHASE_ONE);
@@ -1325,7 +1325,7 @@ public:
                 Talk(SAY_TRASH_DEATH);
         }
 
-        void EnterCombat(Unit* /*who*/)) OVERRIDE
+        void EnterCombat(Unit* /*who*/) OVERRIDE
         {
             events.ScheduleEvent(EVENT_SHOOT, 2000, 0, PHASE_ONE); // TODO: adjust timers
             events.ScheduleEvent(EVENT_CURSED_ARROW, 10000, 0, PHASE_ONE);
@@ -1448,7 +1448,7 @@ public:
             instance->SetData(DATA_FROSWORN_EVENT, DONE);
         }
 
-        void MoveInLineOfSight(Unit* who)
+        void MoveInLineOfSight(Unit* who)  OVERRIDE
         {
             if (!instance)
                 return;
@@ -1470,7 +1470,7 @@ public:
             AttackStart(who);
         }
 
-        void EnterCombat(Unit * /*victim*/)) OVERRIDE
+        void EnterCombat(Unit * /*victim*/) OVERRIDE
         {
             if (!instance)
                 return;
@@ -1885,7 +1885,7 @@ public:
             }
         }
 
-        void MoveInLineOfSight(Unit* who)
+        void MoveInLineOfSight(Unit* who)  OVERRIDE
         {
             if(!who || !m_pInstance)
                 return;
