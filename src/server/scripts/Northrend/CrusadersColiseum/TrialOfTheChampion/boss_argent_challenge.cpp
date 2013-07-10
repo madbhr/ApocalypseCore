@@ -57,7 +57,9 @@ enum Spells
     // Eadric the Pure
     SPELL_EADRIC_ACHIEVEMENT    = 68197,
     SPELL_HAMMER_JUSTICE        = 66863,
+    SPELL_HAMMER_JUSTICE_STUN   = 66940,
     SPELL_HAMMER_RIGHTEOUS      = 66867,
+    SPELL_HAMMER_OVERRIDE_BAR   = 66904, // overrides players cast bar
     SPELL_RADIANCE              = 66935,
     SPELL_VENGEANCE             = 66865,
 
@@ -118,6 +120,36 @@ class spell_eadric_radiance : public SpellScriptLoader
         SpellScript* GetSpellScript() const OVERRIDE
         {
             return new spell_eadric_radiance_SpellScript();
+        }
+};
+
+class spell_eadric_hoj : public SpellScriptLoader
+{
+    public:
+        spell_eadric_hoj() : SpellScriptLoader("spell_eadric_hoj") { }
+        class spell_eadric_hoj_SpellScript: public SpellScript
+        {
+            PrepareSpellScript(spell_eadric_hoj_SpellScript);
+            void HandleOnHit()
+            {
+                if (GetHitUnit() && GetHitUnit()->GetTypeId() == TYPEID_PLAYER)
+                    if (!GetHitUnit()->HasAura(SPELL_HAMMER_JUSTICE_STUN)) // FIXME: Has Catched Hammer...
+                    {
+                        SetHitDamage(0);
+                        GetHitUnit()->AddAura(SPELL_HAMMER_OVERRIDE_BAR, GetHitUnit());
+                    }
+
+            }
+
+            void Register() OVERRIDE
+            {
+                OnHit += SpellHitFn(spell_eadric_hoj_SpellScript::HandleOnHit);
+            }
+        };
+
+        SpellScript* GetSpellScript() const OVERRIDE
+        {
+            return new spell_eadric_hoj_SpellScript();
         }
 };
 
@@ -570,6 +602,7 @@ void AddSC_boss_argent_challenge()
 {
     new boss_eadric();
     new spell_eadric_radiance();
+    new spell_eadric_hoj();
     new boss_paletress();
     new npc_memory();
     new npc_argent_soldier();
