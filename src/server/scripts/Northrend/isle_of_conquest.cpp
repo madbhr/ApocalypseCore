@@ -98,7 +98,7 @@ class bosses_isle_of_conquest : public CreatureScript
 			{ 
 				if (level != 0)
 					level += m_MaxLevel - 60;
-				c->SetLevel(level);      
+                    creature->SetLevel(level);					
 			}
 
 			uint8 m_MaxLevel;

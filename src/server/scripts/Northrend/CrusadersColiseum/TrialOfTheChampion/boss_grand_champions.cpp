@@ -186,7 +186,7 @@ class generic_vehicleAI_toc5 : public CreatureScript
         uint32 uiThrustTimer;
         uint32 uiWaypointPath;
 
-        void Reset()
+        void Reset() OVERRIDE
         {
             combatCheckTimer = 500;
             uiShieldBreakerTimer = 8000;
@@ -519,7 +519,7 @@ class boss_warrior_toc5 : public CreatureScript
         bool bCredit;
         bool hasBeenInCombat;	
 
-        void Reset()
+        void Reset() OVERRIDE
         {
             uiBladeStormTimer = urand(15000,20000);
             uiInterceptTimer  = 7000;
@@ -693,7 +693,7 @@ class boss_mage_toc5 : public CreatureScript
         bool hasBeenInCombat;
         bool bCredit;
 
-        void Reset()
+        void Reset() OVERRIDE
         {
             uiFireBallTimer = 5000;
             uiPolymorphTimer  = 8000;
@@ -857,12 +857,12 @@ class boss_shaman_toc5 : public CreatureScript
         bool hasBeenInCombat;
         bool bCredit;
 
-        void Reset()
+        void Reset() OVERRIDE
         {
             uiChainLightningTimer = 16000;
             uiHealingWaveTimer = 12000;
             uiEartShieldTimer = urand(30000, 35000);
-	    uiHexMendingTimer = urand(20000, 25000);
+	        uiHexMendingTimer = urand(20000, 25000);
         }
         void EnterCombat(Unit* who)
         {
@@ -924,8 +924,8 @@ class boss_shaman_toc5 : public CreatureScript
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM,0))
                     DoCast(target,DUNGEON_MODE(SPELL_CHAIN_LIGHTNING,SPELL_CHAIN_LIGHTNING_H));
 
-                uiChainLightningTimer = 23000;
-            } else uiChainLightningTimer -= uiDiff;
+                    uiChainLightningTimer = 23000;
+            } else  uiChainLightningTimer -= uiDiff;
 
             if (uiHealingWaveTimer <= uiDiff)
             {
@@ -1033,7 +1033,7 @@ class boss_hunter_toc5 : public CreatureScript
         bool hasBeenInCombat;
         bool bCredit;
 
-        void Reset()
+        void Reset() OVERRIDE
         {
             uiShootTimer = 12000;
             uiMultiShotTimer = 0;
@@ -1252,7 +1252,7 @@ class boss_rouge_toc5 : public CreatureScript
         bool hasBeenInCombat;
         bool bCredit;
 
-        void Reset()
+        void Reset() OVERRIDE
         {
             uiEviscerateTimer = 8000;
             uiFanKivesTimer   = 14000;
