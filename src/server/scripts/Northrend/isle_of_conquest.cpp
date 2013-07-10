@@ -76,7 +76,7 @@ class npc_four_car_garage : public CreatureScript
 
 /*#############################
 ## Bosses Isle Of Conquest (A/H)
-###############################*/
+##############################*/
 
 enum SpellsBosses
 {
@@ -89,121 +89,120 @@ enum SpellsBosses
 
 class bosses_isle_of_conquest : public CreatureScript
 {
-public:
-  bosses_isle_of_conquest() : CreatureScript("bosses_isle_of_conquest") { }
-  
-  CreatureAI *GetAI(Creature *creature) const
-  {
-      return new bosses_isle_of_conquestAI(creature);
-  }
+	public:
+		bosses_isle_of_conquest() : CreatureScript("bosses_isle_of_conquest") { }
 
-  struct bosses_isle_of_conquestAI : public ScriptedAI
-  {
-      bosses_isle_of_conquestAI(Creature *c) : ScriptedAI(c) 
-      { 
-          // Seteamos el nivel correspondiente al boss
-          if (level != 0)
-              level += m_MaxLevel - 60;
-          c->SetLevel(level);      
-      }
+		struct bosses_isle_of_conquestAI : public ScriptedAI
+		{
+			bosses_isle_of_conquestAI(Creature* creature) : ScriptedAI(creature) 
+			{ 
+				if (level != 0)
+					level += m_MaxLevel - 60;
+				c->SetLevel(level);      
+			}
 
-      uint8 m_MaxLevel;
-      uint8 level;
-      uint32 uiMortalStrikeTimer;
-      uint32 uiDaggerThrowTimer;
-      uint32 uiCrushingLeapTimer;
-      uint32 uiResetTimer;
-      uint32 uiRage;
+			uint8 m_MaxLevel;
+			uint8 level;
+			uint32 uiMortalStrikeTimer;
+			uint32 uiDaggerThrowTimer;
+			uint32 uiCrushingLeapTimer;
+			uint32 uiResetTimer;
+			uint32 uiRage;
 
-      void Reset()
-      {
-          uiMortalStrikeTimer = 8*IN_MILLISECONDS;
-          uiDaggerThrowTimer  = 2*IN_MILLISECONDS;
-          uiCrushingLeapTimer = 6*IN_MILLISECONDS;
-          uiResetTimer        = 5*IN_MILLISECONDS;
-      }
-      
-      void EnterCombat(Unit * who)
-      {
-          if (!me->IsWithinLOSInMap(who))// Siguie LOS
-          {
-              EnterEvadeMode();
-          }
-      }
+			void Reset()
+			{
+				uiMortalStrikeTimer = 8*IN_MILLISECONDS;
+				uiDaggerThrowTimer  = 2*IN_MILLISECONDS;
+				uiCrushingLeapTimer = 6*IN_MILLISECONDS;
+				uiResetTimer        = 5*IN_MILLISECONDS;
+			}
+		  
+			void EnterCombat(Unit * who)
+			{
+				if (!me->IsWithinLOSInMap(who))/* LOS */
+				{
+					EnterEvadeMode();
+				}
+			}
 
-      void JustRespawned()
-      {
-          Reset();
-      }
+			void JustRespawned()
+			{
+			   Reset();
+			}
 
-      void UpdateAI(uint32 diff)
-      {
-          if (!UpdateVictim())
-              return;
+			void UpdateAI(uint32 diff)
+			{
+				if (!UpdateVictim())
+					return;
 
-          if (uiMortalStrikeTimer < diff)
-          {
-              if (Unit *pVictim = me->GetVictim())
-                  DoCast(pVictim, SPELL_MORTAL_STRIKE);
-              uiMortalStrikeTimer = urand(10*IN_MILLISECONDS,20*IN_MILLISECONDS);
-          }
-          else
-              uiMortalStrikeTimer -= diff;
+				if (uiMortalStrikeTimer < diff)
+				{
+					if (Unit *pVictim = me->GetVictim())
+						DoCast(pVictim, SPELL_MORTAL_STRIKE);
+					uiMortalStrikeTimer = urand(10*IN_MILLISECONDS,20*IN_MILLISECONDS);
+				}
+				else
+					uiMortalStrikeTimer -= diff;
 
-          if (uiDaggerThrowTimer < diff)
-          {
-              if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM))
-                  DoCast(pTarget, RAID_MODE(SPELL_DAGGER_THROW_1, SPELL_DAGGER_THROW_2));
-              uiDaggerThrowTimer = urand(7*IN_MILLISECONDS,12*IN_MILLISECONDS);
-          }
-          else
-              uiDaggerThrowTimer -= diff;
+				if (uiDaggerThrowTimer < diff)
+				{
+					if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM))
+						DoCast(pTarget, RAID_MODE(SPELL_DAGGER_THROW_1, SPELL_DAGGER_THROW_2));
+					uiDaggerThrowTimer = urand(7*IN_MILLISECONDS,12*IN_MILLISECONDS);
+				}
+				else
+					uiDaggerThrowTimer -= diff;
 
-          if (uiCrushingLeapTimer < diff)
-          {
-              if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM))
-                  DoCast(pTarget, SPELL_CRUSHING_LEAP);
-              uiCrushingLeapTimer = urand(12*IN_MILLISECONDS,16*IN_MILLISECONDS);
-          }
-          else
-              uiCrushingLeapTimer -= diff;
-          
-          // chequea si la creatura esta fuera del cuarto
-          if (uiRage <= diff)
-          {
-              if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 50)
-                  DoCast(me->GetVictim(), SPELL_RAGE);                  
-          } else uiRage -= diff;
-          
-          // Chequea si la creatura no esta al exterior del edificio (Antibugers >3)
-          if (uiResetTimer < diff)
-          {
-              float x,y;
-              me->GetPosition(x,y);
+				if (uiCrushingLeapTimer < diff)
+				{
+					if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM))
+						DoCast(pTarget, SPELL_CRUSHING_LEAP);
+					uiCrushingLeapTimer = urand(12*IN_MILLISECONDS,16*IN_MILLISECONDS);
+				}
+				else
+					uiCrushingLeapTimer -= diff;
+			  
+				if (uiRage <= diff)
+				{
+					if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 50)
+						DoCast(me->GetVictim(), SPELL_RAGE);                  
+				} 
+				else 
+					uiRage -= diff;
+			  
+				if (uiResetTimer < diff)
+				{
+					float x,y;
+					me->GetPosition(x,y);
 
-              if (me->GetEntry()== NPC_OVERLORD_AGMAR && (x > 1348 || x < 1283 || y < -800 || y > -730))
-              {
-                  if (Unit *pVictim = me->GetVictim())
-                      me->Kill(pVictim);
-                  me->MonsterSay("Antibugers:$N, No querias bugearlo :)", LANG_UNIVERSAL, me->GetGUID());
-                  EnterEvadeMode();
-              }
+					if (me->GetEntry()== NPC_OVERLORD_AGMAR && (x > 1348 || x < 1283 || y < -800 || y > -730))
+					{
+						if (Unit *pVictim = me->GetVictim())
+							me->Kill(pVictim);
+						me->MonsterSay("Antibugers:$N, No querias bugearlo :)", LANG_UNIVERSAL, me->GetGUID());
+						EnterEvadeMode();
+					}
 
-              if (me->GetEntry()== NPC_HIGH_COMMANDER_HALFORD_WYRMBANE && (x > 288 || x < 216 || y < -863 || y > -800))
-              {
-                  EnterEvadeMode();
-                  me->MonsterSay("Antibugers:$N, No querias bugearlo :)", LANG_UNIVERSAL, me->GetGUID());
-                  if (Unit *pVictim = me->GetVictim())
-                      me->Kill(pVictim);                   
-              }
-              uiResetTimer = 200;
-          }
-          else   
-              uiResetTimer -= diff;
+					if (me->GetEntry()== NPC_HIGH_COMMANDER_HALFORD_WYRMBANE && (x > 288 || x < 216 || y < -863 || y > -800))
+					{
+						EnterEvadeMode();
+						me->MonsterSay("Antibugers:$N, No querias bugearlo :)", LANG_UNIVERSAL, me->GetGUID());
+						if (Unit *pVictim = me->GetVictim())
+							me->Kill(pVictim);                   
+					}
+					uiResetTimer = 200;
+				}
+				else   
+					uiResetTimer -= diff;
 
-          DoMeleeAttackIfReady();
-      }
-  };
+				DoMeleeAttackIfReady();
+			}
+		};
+   
+		CreatureAI* GetAI(Creature* creature) const OVERRIDE
+		{
+		    return new bosses_isle_of_conquestAI(creature);
+		}
 };
 
 void AddSC_isle_of_conquest()
