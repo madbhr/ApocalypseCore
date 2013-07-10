@@ -100,17 +100,17 @@ void AggroAllPlayers(Creature* pTemp)
 {
     Map::PlayerList const &PlList = pTemp->GetMap()->GetPlayers();
 
-    if(PlList.isEmpty())
+    if (PlList.isEmpty())
             return;
 
     for (Map::PlayerList::const_iterator i = PlList.begin(); i != PlList.end(); ++i)
     {
-        if(Player* player = i->GetSource())
+        if (Player* player = i->GetSource())
         {
-            if(player->IsGameMaster())
+            if (player->IsGameMaster())
                 continue;
 
-            if(player->IsAlive())
+            if (player->IsAlive())
             {
                 pTemp->RemoveFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_IMMUNE_TO_PC);
                 pTemp->SetReactState(REACT_AGGRESSIVE);
@@ -148,8 +148,8 @@ bool GrandChampionsOutVehicle(Creature* me)
 }
 
 /*
-* Generic AI for vehicles used by npcs in ToC, it needs more improvements.  *
-* Script Complete: 25%.                                                     *
+* Generic AI for vehicles used by npcs in ToC, it needs more improvements.  
+* Script Complete: 25%.                                                     
 */
 class generic_vehicleAI_toc5 : public CreatureScript
 {
@@ -163,7 +163,7 @@ class generic_vehicleAI_toc5 : public CreatureScript
             hasBeenInCombat = false;
             SetDespawnAtEnd(false);
             uiWaypointPath = 0;
-            uiCheckTimer=5000;
+            uiCheckTimer= 5000;
             pInstance = creature->GetInstanceScript();
         }
 
@@ -198,9 +198,9 @@ class generic_vehicleAI_toc5 : public CreatureScript
 
         }
 
-        void SetData(uint32 uiType, uint32 /*uiData8*/)
+        void SetData(uint32 uiType, uint32 /*uiData8*/) OVERRIDE
         {
-            switch(uiType)
+            switch (uiType)
             {
                 case 1:
                     AddWaypoint(0, 746.45f, 647.03f, 411.57f);
@@ -237,10 +237,10 @@ class generic_vehicleAI_toc5 : public CreatureScript
             }
 
             if (uiType <= 3)
-                Start(false,true,0,NULL);
+                Start(false, true, 0, NULL);
         }
 
-        void WaypointReached(uint32 i)
+        void WaypointReached(uint32 i) OVERRIDE
         {
             switch(i)
             {
@@ -255,7 +255,7 @@ class generic_vehicleAI_toc5 : public CreatureScript
             }
         }
 
-        void EnterCombat(Unit* who)
+        void EnterCombat(Unit* who) OVERRIDE
         {
             hasBeenInCombat = true;
             DoCastSpellDefend();
@@ -267,7 +267,7 @@ class generic_vehicleAI_toc5 : public CreatureScript
                 DoCast(me, SPELL_DEFEND, true);
         }
 
-        void SpellHit(Unit* source, const SpellInfo* spell)
+        void SpellHit(Unit* source, const SpellInfo* spell) OVERRIDE
         {
 
             uint32 defendAuraStackAmount = 0;
@@ -479,7 +479,9 @@ class generic_vehicleAI_toc5 : public CreatureScript
     }
 };
 
+// ########################################################
 // Marshal Jacob Alerius && Mokra the Skullcrusher || Warrior
+// ########################################################
 class boss_warrior_toc5 : public CreatureScript
 {
     public:
@@ -521,11 +523,11 @@ class boss_warrior_toc5 : public CreatureScript
 
         void Reset() OVERRIDE
         {
-            uiBladeStormTimer = urand(15000,20000);
+            uiBladeStormTimer = urand(15000, 20000);
             uiInterceptTimer  = 7000;
             uiMortalStrikeTimer = urand(8000, 12000);
         }
-        void JustReachedHome()
+        void JustReachedHome() OVERRIDE
         {
             ScriptedAI::JustReachedHome();
 
@@ -538,7 +540,7 @@ class boss_warrior_toc5 : public CreatureScript
             bHome = false;
         }
 
-	    void EnterCombat(Unit* who)
+	    void EnterCombat(Unit* who) OVERRIDE
         {
 		    _EnterCombat();
 		    hasBeenInCombat = true;
@@ -554,11 +556,11 @@ class boss_warrior_toc5 : public CreatureScript
                 me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect	
 
                 if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_1))
-                    me->SetHomePosition(739.678f,662.541f,413.395f,4.49f);
+                    me->SetHomePosition(739.678f, 662.541f, 413.395f, 4.49f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_2))
-                    me->SetHomePosition(746.71f,661.02f,412.695f,4.6f);
+                    me->SetHomePosition(746.71f, 661.02f, 412.695f, 4.6f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_3))
-                    me->SetHomePosition(754.34f,660.70f,413.395f,4.79f);
+                    me->SetHomePosition(754.34f, 660.70f, 413.395f, 4.79f);
 
                 EnterEvadeMode();
                 bHome = true;
@@ -599,19 +601,19 @@ class boss_warrior_toc5 : public CreatureScript
             if (uiBladeStormTimer <= uiDiff)
             {
                 DoCastVictim(SPELL_BLADESTORM);
-                uiBladeStormTimer = urand(15000,25000);
+                uiBladeStormTimer = urand(15000, 25000);
             } else uiBladeStormTimer -= uiDiff;
 
             if (uiMortalStrikeTimer <= uiDiff)
             {
                 DoCastVictim(DUNGEON_MODE(SPELL_MORTAL_STRIKE, SPELL_MORTAL_STRIKE_H));
-                uiMortalStrikeTimer = urand(8000,12000);
+                uiMortalStrikeTimer = urand(8000, 12000);
             } else uiMortalStrikeTimer -= uiDiff;
 
             DoMeleeAttackIfReady();
         }
 
-        void DamageTaken(Unit* /*who*/, uint32& damage)
+        void DamageTaken(Unit* /*who*/, uint32& damage) OVERRIDE
         {
             if (damage >= me->GetHealth())
             {
@@ -651,7 +653,10 @@ class boss_warrior_toc5 : public CreatureScript
     }
 };
 
+// ###############################################
 // Ambrose Boltspark && Eressea Dawnsinger || Mage
+// ###############################################
+
 class boss_mage_toc5 : public CreatureScript
 {
     public:
@@ -701,7 +706,7 @@ class boss_mage_toc5 : public CreatureScript
             uiHasteTimer = 22000;
         }
 		
-        void JustReachedHome()
+        void JustReachedHome() OVERRIDE
         {
             ScriptedAI::JustReachedHome();
 
@@ -714,7 +719,7 @@ class boss_mage_toc5 : public CreatureScript
             bHome = false;
         }
 
-	    void EnterCombat(Unit* who)
+	    void EnterCombat(Unit* who) OVERRIDE
         {
 		    _EnterCombat();
 		    hasBeenInCombat = true;
@@ -729,11 +734,11 @@ class boss_mage_toc5 : public CreatureScript
                 me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect
 
                 if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_1))
-                    me->SetHomePosition(739.678f,662.541f,413.395f,4.49f);
+                    me->SetHomePosition(739.678f, 662.541f, 413.395f, 4.49f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_2))
-                    me->SetHomePosition(746.71f,661.02f,412.695f,4.6f);
+                    me->SetHomePosition(746.71f, 661.02f, 412.695f, 4.6f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_3))
-                    me->SetHomePosition(754.34f,660.70f,413.395f,4.79f);
+                    me->SetHomePosition(754.34f, 660.70f, 413.395f, 4.79f);
 
                 if (pInstance)
                     pInstance->SetData(BOSS_GRAND_CHAMPIONS, IN_PROGRESS);
@@ -784,7 +789,7 @@ class boss_mage_toc5 : public CreatureScript
             DoMeleeAttackIfReady();
         }
 
-        void DamageTaken(Unit* /*who*/, uint32& damage)
+        void DamageTaken(Unit* /*who*/, uint32& damage) OVERRIDE
         {
             if (damage >= me->GetHealth())
             {
@@ -804,7 +809,7 @@ class boss_mage_toc5 : public CreatureScript
                 EnterEvadeMode();
                 me->SetFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE);
                 me->setFaction(35);
-                me->GetMotionMaster()->MovePoint(0,746.843f, 695.68f, 412.339f);
+                me->GetMotionMaster()->MovePoint(0, 746.843f, 695.68f, 412.339f);
                 me->DespawnOrUnsummon(5000);
             }
         }
@@ -816,7 +821,10 @@ class boss_mage_toc5 : public CreatureScript
     };
 };
 
+// ###################################
 // Colosos && Runok Wildmane || Shaman
+// ###################################
+
 class boss_shaman_toc5 : public CreatureScript
 {
     public:
@@ -864,7 +872,7 @@ class boss_shaman_toc5 : public CreatureScript
             uiEartShieldTimer = urand(30000, 35000);
 	        uiHexMendingTimer = urand(20000, 25000);
         }
-        void EnterCombat(Unit* who)
+        void EnterCombat(Unit* who) OVERRIDE
         {
 		    _EnterCombat();
             hasBeenInCombat = true;
@@ -872,7 +880,7 @@ class boss_shaman_toc5 : public CreatureScript
             DoCast(who,SPELL_HEX_OF_MENDING);
         };
 
-        void JustReachedHome()
+        void JustReachedHome() OVERRIDE
         {
             ScriptedAI::JustReachedHome();
 
@@ -894,11 +902,11 @@ class boss_shaman_toc5 : public CreatureScript
                 me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect
 
                 if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_1))
-                    me->SetHomePosition(739.678f,662.541f,413.395f,4.49f);
+                    me->SetHomePosition(739.678f, 662.541f, 413.395f, 4.49f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_2))
-                    me->SetHomePosition(746.71f,661.02f,412.695f,4.6f);
+                    me->SetHomePosition(746.71f, 661.02f, 412.695f, 4.6f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_3))
-                    me->SetHomePosition(754.34f,660.70f,413.395f,4.79f);
+                    me->SetHomePosition(754.34f, 660.70f, 413.395f, 4.79f);
 
                 if (pInstance)
                     pInstance->SetData(BOSS_GRAND_CHAMPIONS, IN_PROGRESS);
@@ -945,20 +953,20 @@ class boss_shaman_toc5 : public CreatureScript
             {
                 DoCast(me,SPELL_EARTH_SHIELD);
 
-                uiEartShieldTimer = urand(40000,45000);
+                uiEartShieldTimer = urand(40000, 45000);
             } else uiEartShieldTimer -= uiDiff;
 
             if (uiHexMendingTimer <= uiDiff)
             {
                 DoCastVictim(SPELL_HEX_OF_MENDING,true);
 
-                uiHexMendingTimer = urand(30000,35000);
+                uiHexMendingTimer = urand(30000, 35000);
             } else uiHexMendingTimer -= uiDiff;
 
             DoMeleeAttackIfReady();
         }
 
-        void DamageTaken(Unit* /*who*/, uint32& damage)
+        void DamageTaken(Unit* /*who*/, uint32& damage) OVERRIDE
         {
             if (damage >= me->GetHealth())
             {
@@ -978,7 +986,7 @@ class boss_shaman_toc5 : public CreatureScript
                 EnterEvadeMode();
                 me->SetFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE);
                 me->setFaction(35);
-                me->GetMotionMaster()->MovePoint(0,746.843f, 695.68f, 412.339f);
+                me->GetMotionMaster()->MovePoint(0, 746.843f, 695.68f, 412.339f);
                 me->DespawnOrUnsummon(5000);
             }
         }
@@ -990,7 +998,10 @@ class boss_shaman_toc5 : public CreatureScript
     }
 };
 
+// ######################################
 // Jaelyne Evensong && Zul'tore || Hunter
+// ######################################
+
 class boss_hunter_toc5 : public CreatureScript
 {
     public:
@@ -1069,7 +1080,7 @@ class boss_hunter_toc5 : public CreatureScript
 		    }
 	    }
 
-        void JustReachedHome()
+        void JustReachedHome() OVERRIDE
         {
             ScriptedAI::JustReachedHome();
 
@@ -1082,7 +1093,7 @@ class boss_hunter_toc5 : public CreatureScript
             bHome = false;
         }
 
-	    void EnterCombat(Unit* who)
+	    void EnterCombat(Unit* who) OVERRIDE
         {
 		    _EnterCombat();
 		    hasBeenInCombat = true;
@@ -1097,11 +1108,11 @@ class boss_hunter_toc5 : public CreatureScript
                 me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect
 
                 if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_1))
-                    me->SetHomePosition(739.678f,662.541f,413.395f,4.49f);
+                    me->SetHomePosition(739.678f, 662.541f, 413.395f, 4.49f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_2))
-                    me->SetHomePosition(746.71f,661.02f,412.695f,4.6f);
+                    me->SetHomePosition(746.71f, 661.02f,412.695f, 4.6f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_3))
-                    me->SetHomePosition(754.34f,660.70f,413.395f,4.79f);
+                    me->SetHomePosition(754.34f, 660.70f, 413.395f, 4.79f);
 
                 if (pInstance)
                     pInstance->SetData(BOSS_GRAND_CHAMPIONS, IN_PROGRESS);
@@ -1141,7 +1152,7 @@ class boss_hunter_toc5 : public CreatureScript
 
             if (uiShootTimer <= uiDiff)
             {
-                if (Unit* target = SelectTarget(SELECT_TARGET_FARTHEST,0,30.0f))
+                if (Unit* target = SelectTarget(SELECT_TARGET_FARTHEST, 0, 30.0f))
                 {
                     uiTargetGUID = target->GetGUID();
                     DoCast(target, DUNGEON_MODE(SPELL_SHOOT,SPELL_SHOOT_H));
@@ -1156,7 +1167,7 @@ class boss_hunter_toc5 : public CreatureScript
                 me->InterruptNonMeleeSpells(true);
                 Unit* target = Unit::GetUnit(*me, uiTargetGUID);
 
-                if (target && me->IsInRange(target,5.0f,30.0f,false))
+                if (target && me->IsInRange(target, 5.0f, 30.0f, false))
                 {
                     DoCast(target,SPELL_MULTI_SHOT);
                 } else
@@ -1181,7 +1192,7 @@ class boss_hunter_toc5 : public CreatureScript
             DoMeleeAttackIfReady();
         }
 
-        void DamageTaken(Unit* /*who*/, uint32& damage)
+        void DamageTaken(Unit* /*who*/, uint32& damage) OVERRIDE
         {
             if (damage >= me->GetHealth())
             {
@@ -1201,7 +1212,7 @@ class boss_hunter_toc5 : public CreatureScript
                 EnterEvadeMode();
                 me->SetFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE);
                 me->setFaction(35);
-                me->GetMotionMaster()->MovePoint(0,746.843f, 695.68f, 412.339f);
+                me->GetMotionMaster()->MovePoint(0, 746.843f, 695.68f, 412.339f);
                 me->DespawnOrUnsummon(5000);
             }
         }
@@ -1213,7 +1224,10 @@ class boss_hunter_toc5 : public CreatureScript
     }
 };
 
+// ##########################################################
 // Lana Stouthammer Evensong && Deathstalker Visceri || Rouge
+// ##########################################################
+
 class boss_rouge_toc5 : public CreatureScript
 {
     public:
@@ -1283,7 +1297,7 @@ class boss_rouge_toc5 : public CreatureScript
     		
 	    }
 
-        void JustReachedHome()
+        void JustReachedHome() OVERRIDE
         {
             ScriptedAI::JustReachedHome();
 
@@ -1296,7 +1310,7 @@ class boss_rouge_toc5 : public CreatureScript
             bHome = false;
         }
 
-	    void EnterCombat(Unit* who)
+	    void EnterCombat(Unit* who) OVERRIDE
         {
 		    _EnterCombat();
 		    hasBeenInCombat = true;
@@ -1311,11 +1325,11 @@ class boss_rouge_toc5 : public CreatureScript
                 me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect
 
                 if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_1))
-                    me->SetHomePosition(739.678f,662.541f,413.395f,4.49f);
+                    me->SetHomePosition(739.678f, 662.541f, 413.395f, 4.49f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_2))
-                    me->SetHomePosition(746.71f,661.02f,412.695f,4.6f);
+                    me->SetHomePosition(746.71f, 661.02f, 412.695f, 4.6f);
                 else if (pInstance && me->GetGUID() == pInstance->GetData64(DATA_GRAND_CHAMPION_3))
-                    me->SetHomePosition(754.34f,660.70f,413.395f,4.79f);
+                    me->SetHomePosition(754.34f, 660.70f, 413.395f, 4.79f);
 
                 if (pInstance)
                     pInstance->SetData(BOSS_GRAND_CHAMPIONS, IN_PROGRESS);
@@ -1358,7 +1372,7 @@ class boss_rouge_toc5 : public CreatureScript
             DoMeleeAttackIfReady();
         }
 
-        void DamageTaken(Unit* /*who*/, uint32& damage)
+        void DamageTaken(Unit* /*who*/, uint32& damage) OVERRIDE
         {
             if (damage >= me->GetHealth())
             {
@@ -1378,7 +1392,7 @@ class boss_rouge_toc5 : public CreatureScript
                 EnterEvadeMode();
                 me->SetFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_NON_ATTACKABLE);
                 me->setFaction(35);
-                me->GetMotionMaster()->MovePoint(0,746.843f, 695.68f, 412.339f);
+                me->GetMotionMaster()->MovePoint(0, 746.843f, 695.68f, 412.339f);
                 me->DespawnOrUnsummon(5000);
             }
         }
