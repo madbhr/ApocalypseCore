@@ -2344,7 +2344,7 @@ void Player::KnockBackWithAngle(float angle, float horizontalSpeed, float vertic
     float vcos = cos(angle);
   
     // Effect propertly implemented only for players
-    WorldPacket data(SMSG_MOVE_KNOCK_BACK, 8+4+4+4+4+4);
+    WorldPacket data(SMSG_MOVE_KNOCK_BACK, 8 + 4 + 4 + 4 + 4 + 4);
     data.append(GetPackGUID());
     data << uint32(0);                                  // Sequence
     data << float(vcos);                                // x direction
