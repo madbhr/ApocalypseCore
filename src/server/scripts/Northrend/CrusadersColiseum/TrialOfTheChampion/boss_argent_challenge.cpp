@@ -598,6 +598,75 @@ public:
     }
 };
 
+enum ReflectiveShield
+{
+    SPELL_REFLECTIVE_SHIELD_TRIGGERED = 33619,
+};
+
+// Reflective Shield 66515
+class spell_gen_reflective_shield : public SpellScriptLoader
+{
+    public:
+        spell_gen_reflective_shield() : SpellScriptLoader("spell_gen_reflective_shield") { }
+
+        class spell_gen_reflective_shield_AuraScript : public AuraScript
+        {
+            PrepareAuraScript(spell_gen_reflective_shield_AuraScript);
+
+            bool Validate(SpellInfo const* /*spell*/)
+            {
+                if (!sSpellMgr->GetSpellInfo(SPELL_REFLECTIVE_SHIELD_TRIGGERED))
+                    return false;
+
+                return true;
+            }
+
+            void Trigger(AuraEffect * aurEff, DamageInfo & dmgInfo, uint32 & absorbAmount)
+            {
+                Unit * target = dmgInfo.GetAttacker();
+                if (!target)
+                    return;
+                Unit * caster = GetCaster();
+                if (!caster)
+                    return;
+                int32 bp = CalculatePct(absorbAmount, 25);
+                target->CastCustomSpell(target, SPELL_REFLECTIVE_SHIELD_TRIGGERED, &bp, NULL, NULL, true, NULL, aurEff);
+            }
+
+            void Register() OVERRIDE
+            {
+                 AfterEffectAbsorb += AuraEffectAbsorbFn(spell_gen_reflective_shield_AuraScript::Trigger, EFFECT_0);
+            }
+        };
+
+        AuraScript *GetAuraScript() const OVERRIDE
+        {
+            return new spell_gen_reflective_shield_AuraScript();
+        }
+};
+
+class achievement_toc5_argent_challenge : public AchievementCriteriaScript
+{
+    public:
+        uint32 creature_entry;
+
+        achievement_toc5_argent_challenge(const char* name, uint32 original_entry) : AchievementCriteriaScript(name) {
+            creature_entry = original_entry;
+        }
+
+        bool OnCheck(Player* source, Unit* target)
+        {
+            if (!target)
+                return false;
+
+            if (Creature* creature = target->ToCreature())
+                if (creature->GetOriginalEntry() == creature_entry)
+                    return true;
+
+            return false;
+        }
+};
+
 void AddSC_boss_argent_challenge()
 {
     new boss_eadric();
@@ -606,4 +675,7 @@ void AddSC_boss_argent_challenge()
     new boss_paletress();
     new npc_memory();
     new npc_argent_soldier();
+    new spell_gen_reflective_shield();
+    new achievement_toc5_argent_challenge("achievement_toc5_paletress", NPC_PALETRESS);
+    new achievement_toc5_argent_challenge("achievement_toc5_eadric", NPC_EADRIC);
 }
