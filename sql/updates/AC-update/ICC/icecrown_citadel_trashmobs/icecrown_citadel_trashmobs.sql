@@ -1,6 +1,6 @@
---- --------------
---- -Trashmobs ICC
---- --------------
+-- --------------
+-- -Trashmobs ICC
+-- --------------
 
 UPDATE `creature_template` SET AIName = "" WHERE entry IN (36725, 36724, 37012, 37007, 36811, 36807, 36829, 36805, 36808, 37098, 37022, 37038, 37023, 10404, 36880, 37664, 37595, 37663, 37901, 37571, 37662, 37665, 37666, 38125, 37127, 37132, 37134, 37133); 
 UPDATE `creature_template` SET `ScriptName` = 'npc_NerubarBroodkeeper' WHERE `entry` = 36725;
