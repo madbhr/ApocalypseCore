@@ -1,6 +1,7 @@
--- --------------
--- -Trashmobs ICC
--- --------------
+--- --------------
+--- -Trashmobs ICC
+--- --------------
+
 UPDATE `creature_template` SET AIName = "" WHERE entry IN (36725, 36724, 37012, 37007, 36811, 36807, 36829, 36805, 36808, 37098, 37022, 37038, 37023, 10404, 36880, 37664, 37595, 37663, 37901, 37571, 37662, 37665, 37666, 38125, 37127, 37132, 37134, 37133); 
 UPDATE `creature_template` SET `ScriptName` = 'npc_NerubarBroodkeeper' WHERE `entry` = 36725;
 UPDATE `creature_template` SET `ScriptName` = 'npc_ServantoftheThrone' WHERE `entry` = 36724;
@@ -28,20 +29,20 @@ UPDATE `creature_template` SET scriptname = "npc_darkfallen_tactician" WHERE ent
 
 -- Equip for darkfallen blood knight
 DELETE FROM `creature_equip_template` WHERE entry = 37595;
-INSERT INTO `creature_equip_template` VALUES (37595, 51028, 0, 0);
-UPDATE `creature_template` SET equipment_id = 37595 WHERE entry = 37595;
+INSERT INTO `creature_equip_template` VALUES (37595, 1, 51028, 0, 0);
+UPDATE creature SET equipment_id = 37595 WHERE id = 37595;
 -- Equip for darkfallen tactician
 DELETE FROM `creature_equip_template` WHERE entry = 37666;
-INSERT INTO `creature_equip_template` VALUES (37666, 51029, 51029, 0);
-UPDATE `creature_template` SET equipment_id = 37666 WHERE entry = 37666;
+INSERT INTO `creature_equip_template` VALUES (37666, 1, 51029, 51029, 0);
+UPDATE creature SET equipment_id = 37666 WHERE id = 37666;
 -- Equip for darkfallen commander
 DELETE FROM `creature_equip_template` WHERE entry = 37662;
-INSERT INTO `creature_equip_template` VALUES (37662, 51322, 0, 0);
-UPDATE `creature_template` SET equipment_id = 37662 WHERE entry = 37662;
+INSERT INTO `creature_equip_template` VALUES (37662, 1, 51322, 0, 0);
+UPDATE creature SET equipment_id = 37662 WHERE id = 37662;
 -- Equip for darkfallen lieutenant
 DELETE FROM `creature_equip_template` WHERE entry = 37665;
-INSERT INTO `creature_equip_template` VALUES (37665, 51323, 51324, 0);
-UPDATE `creature_template` SET equipment_id = 37662 WHERE entry = 37665;
+INSERT INTO `creature_equip_template` VALUES (37665, 1, 51323, 51324, 0);
+UPDATE creature SET equipment_id = 37662 WHERE id = 37665;
 
 -- Nerubar Broodkeeper position
 UPDATE `creature` SET `position_z` = 35.24 WHERE `guid`=201170;
