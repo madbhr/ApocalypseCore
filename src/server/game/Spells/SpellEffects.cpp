@@ -1180,10 +1180,10 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
     if (!unitTarget || unitTarget->IsInFlight())
         return;
 
-    // Pre effects
+/*  // Pre effects
     switch (m_spellInfo->Id)
     {
-        /*case 66550: // teleports outside (Isle of Conquest)
+        case 66550: // teleports outside (Isle of Conquest)
             if (Player* target = unitTarget->ToPlayer())
             {
                 if (target->GetTeamId() == TEAM_ALLIANCE)
@@ -1200,9 +1200,9 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
                 else
                     m_targets.SetDst(1174.85f, -763.24f, 48.72f, 6.26f, 628);
             }
-            break; */
-    }
-
+            break;
+    } 
+*/
     // If not exist data for dest location - return
     if (!m_targets.HasDst())
     {
