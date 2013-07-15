@@ -105,7 +105,7 @@ public:
 
     CreatureAI* GetAI(Creature* creature) const OVERRIDE
     {
-        return new boss_kalecgosAI (creature);
+        return new boss_kalecgosAI(creature);
     }
 
     struct boss_kalecgosAI : public ScriptedAI
@@ -444,7 +444,7 @@ public:
 
     CreatureAI* GetAI(Creature* creature) const OVERRIDE
     {
-        return new boss_kalecAI (creature);
+        return new boss_kalecAI(creature);
     }
 
     struct boss_kalecAI : public ScriptedAI
@@ -556,8 +556,8 @@ public:
             if (i->GetSource() && i->GetSource()->GetPositionZ() < DEMON_REALM_Z + 5)
                 ++SpectralPlayers;
         }
-        uint8 MaxSpectralPlayers =  MAX_PLAYERS_IN_SPECTRAL_REALM;
-        if (player->HasAura(AURA_SPECTRAL_EXHAUSTION) || (MaxSpectralPlayers && SpectralPlayers >= MaxSpectralPlayers))
+
+        if (player->HasAura(AURA_SPECTRAL_EXHAUSTION) || SpectralPlayers >= MAX_PLAYERS_IN_SPECTRAL_REALM)
             player->GetSession()->SendNotification(GO_FAILED);
         else
             player->CastSpell(player, SPELL_TELEPORT_SPECTRAL, true);
@@ -572,7 +572,7 @@ public:
 
     CreatureAI* GetAI(Creature* creature) const OVERRIDE
     {
-        return new boss_sathrovarrAI (creature);
+        return new boss_sathrovarrAI(creature);
     }
 
     struct boss_sathrovarrAI : public ScriptedAI

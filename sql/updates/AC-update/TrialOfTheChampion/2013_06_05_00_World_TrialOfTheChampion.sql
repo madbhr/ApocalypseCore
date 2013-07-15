@@ -81,6 +81,8 @@ INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entr
 (35768, 0, 0, 0, 0, 0, 29255, 0, 0, 0, 'Colosos'' Mount', '', '', 0, 80, 80, 2, 14, 14, 0, 1, 1.38571, 1, 1, 420, 630, 0, 157, 1, 2000, 0, 1, 0, 8, 0, 0, 0, 0, 0, 345, 509, 103, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 489, 0, 0, '', 0, 3, 15, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 'generic_vehicleAI_toc5', 12340),
 (36558, 0, 0, 0, 0, 0, 29283, 0, 0, 0, 'Argent Battleworg', '', 'vehichleCursor', 0, 80, 80, 2, 83, 83, 16777216, 1, 2, 1, 0, 422, 586, 0, 642, 1, 0, 0, 1, 256, 8, 0, 0, 0, 0, 0, 345, 509, 103, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62544, 62575, 63010, 66482, 0, 0, 0, 0, 0, 486, 0, 0, '', 0, 3, 3.96825, 1, 1, 0, 0, 0, 0, 0, 0, 0, 157, 1, 0, 0, '', 12340);
 
+UPDATE `creature_template` SET `ScriptName`='npc_risen_ghoul' WHERE `entry` IN (35545);
+
 -- Mount on mount action!
 DELETE FROM `vehicle_template_accessory` WHERE `entry` IN (35638,35637,35635,34658,35636,35768,35633,35640,35641,35634,33321,33323,33320,33322,33316,33317,33324,33217,33318,33319,35491);
 INSERT INTO `vehicle_template_accessory` (`entry`, `accessory_entry`, `seat_id`, `minion`, `description`, `summontype`, `summontimer`) VALUES
@@ -261,7 +263,8 @@ INSERT INTO `creature_text` (`entry`, `groupid`, `id`, `text`, `type`, `language
 (34996, 24, 0, "Go now and rest; you've earned it.", 12, 0, 0, 2, 0, 0, "ToC5 - Black Knight Dies Alliance 2"),
 (34990, 13, 0, "You fought well.", 12, 0, 0, 2, 0, 0, "ToC5 - Black Knight Dies Alliance 3");
 
--- Equipment
+/*
+--Equipment
 DELETE FROM `creature_equip_template` WHERE `entry` IN (35314,35326,35327,35325,35323,35331,35330,35329,35328,35332, 35571,36090,35569,36085,35572,36089,35617,36084,35570,36091,34701,36803,34703,36087,34657,36086,34705,36088,35119,35518,34928,35517,35451,35490) AND `id` = 1;
 INSERT INTO `creature_equip_template` (`entry`, `id`, `itemEntry1`, `itemEntry2`, `itemEntry3`)VALUES 
 ('35314', '1', '2049', '0', '0'),
@@ -295,7 +298,7 @@ INSERT INTO `creature_equip_template` (`entry`, `id`, `itemEntry1`, `itemEntry2`
 ('35119', '1', '834', '0', '0'),
 ('35518', '1', '834', '0', '0'),
 ('35517', '1', '235', '0', '0'),
-('34928', '1', '235', '0', '0');
+('34928', '1', '235', '0', '0'); */
 
 -- Fountain of Light
 DELETE FROM `creature_template` WHERE `entry`=35311;
@@ -307,6 +310,7 @@ UPDATE `creature_template` SET `faction_A`=35, `faction_H`=35, `mindmg`=0, `maxd
 
 REPLACE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction_A`, `faction_H`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `mindmg`, `maxdmg`, `dmgschool`, `attackpower`, `dmg_multiplier`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `minrangedmg`, `maxrangedmg`, `rangedattackpower`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `Health_mod`, `Mana_mod`, `Armor_mod`, `RacialLeader`, `questItem1`, `questItem2`, `questItem3`, `questItem4`, `questItem5`, `questItem6`, `movementId`, `RegenHealth`,  `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `WDBVerified`) VALUES
 (35451, 35490, 0, 0, 0, 0, 29837, 0, 0, 0, 'The Black Knight', '', '', 0, 80, 80, 2, 14, 14, 0, 1, 1.14286, 1, 1, 422, 586, 0, 642, 7.5, 1800, 0, 1, 0, 8, 0, 0, 0, 0, 0, 345, 509, 103, 6, 72, 35451, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 16, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 'boss_black_knight', 12340);
+
 -- heroic mod template of DK
 REPLACE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction_A`, `faction_H`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `mindmg`, `maxdmg`, `dmgschool`, `attackpower`, `dmg_multiplier`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `minrangedmg`, `maxrangedmg`, `rangedattackpower`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `Health_mod`, `Mana_mod`, `Armor_mod`, `RacialLeader`, `questItem1`, `questItem2`, `questItem3`, `questItem4`, `questItem5`, `questItem6`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `WDBVerified`) VALUES
 (35490, 0, 0, 0, 0, 0, 29837, 0, 0, 0, 'The Black Knight (1)', '', '', 0, 80, 80, 2, 14, 14, 0, 1, 1.14286, 1, 1, 422, 586, 0, 642, 13, 0, 0, 1, 0, 8, 0, 0, 0, 0, 0, 345, 509, 103, 6, 72, 35490, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 22, 1, 1, 0, 48418, 0, 0, 0, 0, 0, 0, 1, 0, 1, '', 12340);
@@ -326,8 +330,10 @@ UPDATE `creature_template` SET `AIName`='PassiveAI', `unit_flags`=33554434 WHERE
 
 -- scale of mokra mount
 UPDATE `creature_template` SET `scale`=1.5 WHERE `entry`=35638;
+
 -- Immune to daze
-UPDATE creature_template SET mechanic_immune_mask=mechanic_immune_mask|0x04000000 WHERE entry IN (33531,33782,36558,35644); 
+UPDATE creature_template SET mechanic_immune_mask=mechanic_immune_mask|0x04000000 WHERE entry IN (33531,33782,36558,35644);
+
 -- pendand and cosmetic stuff
 DELETE FROM `creature_template_addon` WHERE `entry` IN (34701, 34657, 34705, 35570, 35569, 35332,35330,33299,35328,35327,35331,35329,35325,35314,35326,35323, 35572, 35571, 34703, 34702, 35617);
 INSERT INTO `creature_template_addon` (`entry`,`bytes2`,`auras`) VALUES 
@@ -508,7 +514,8 @@ UPDATE  `gameobject` SET  `state` =  '1' WHERE  `gameobject`.`guid` =150074;
 DELETE FROM spell_script_names WHERE `spell_id` IN (67680, 66903);
 INSERT INTO spell_script_names (spell_id, ScriptName) VALUES
 (67680, 'spell_eadric_hoj'), -- Eadric's Hammer of Justice
-(66903, 'spell_eadric_hoj'); 
+(66903, 'spell_eadric_hoj'),
+(66515,'spell_gen_reflective_shield'); -- Reflective Shield 
 
 DELETE FROM spell_linked_spell WHERE spell_trigger = 66905;
 INSERT INTO spell_linked_spell (spell_trigger, spell_effect, type, comment) VALUES

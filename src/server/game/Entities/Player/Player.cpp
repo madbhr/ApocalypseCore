@@ -2135,7 +2135,7 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
         ExitVehicle();
 
     // reset movement flags at teleport, because player will continue move with these flags after teleport
-    SetUnitMovementFlags(0);
+    SetUnitMovementFlags(GetUnitMovementFlags() & MOVEMENTFLAG_MASK_HAS_PLAYER_STATUS_OPCODE);
     DisableSpline();
 
     if (m_transport)
@@ -2344,7 +2344,7 @@ void Player::KnockBackWithAngle(float angle, float horizontalSpeed, float vertic
     float vcos = cos(angle);
   
     // Effect propertly implemented only for players
-    WorldPacket data(SMSG_MOVE_KNOCK_BACK, 8+4+4+4+4+4);
+    WorldPacket data(SMSG_MOVE_KNOCK_BACK, 8 + 4 + 4 + 4 + 4 + 4);
     data.append(GetPackGUID());
     data << uint32(0);                                  // Sequence
     data << float(vcos);                                // x direction
@@ -6912,7 +6912,9 @@ void Player::CheckAreaExploreAndOutdoor()
                 {
                     XP = uint32(sObjectMgr->GetBaseXP(areaEntry->area_level)*sWorld->getRate(RATE_XP_EXPLORE));
                 }
-
+				
+                if(GetSession()->IsPremium())
+                XP *= sWorld->getRate(RATE_XP_EXPLORE_PREMIUM);
                 GiveXP(XP, NULL);
                 SendExplorationExperience(area, XP);
             }
@@ -7258,7 +7260,15 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
         AddPct(honor_f, GetMaxPositiveAuraModifier(SPELL_AURA_MOD_HONOR_GAIN_PCT));
     }
 
-    honor_f *= sWorld->getRate(RATE_HONOR);
+    if (GetSession()->IsPremium())
+    {
+        honor_f *= sWorld->getRate(RATE_VIP_HONOR_PREMIUM);
+    }
+    else
+    {
+        honor_f *= sWorld->getRate(RATE_HONOR);
+    }
+
     // Back to int now
     honor = int32(honor_f);
     // honor - for show honor points in log
@@ -15262,6 +15272,9 @@ void Player::RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, 
     Unit::AuraEffectList const& ModXPPctAuras = GetAuraEffectsByType(SPELL_AURA_MOD_XP_QUEST_PCT);
     for (Unit::AuraEffectList::const_iterator i = ModXPPctAuras.begin(); i != ModXPPctAuras.end(); ++i)
         AddPct(XP, (*i)->GetAmount());
+		
+		if (GetSession()->IsPremium())
+        XP *= sWorld->getRate(RATE_XP_QUEST_PREMIUM);
 
     int32 moneyRew = 0;
     if (getLevel() < sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
@@ -16674,11 +16687,11 @@ void Player::SendQuestConfirmAccept(const Quest* quest, Player* pReceiver)
     }
 }
 
-void Player::SendPushToPartyResponse(Player* player, uint32 msg)
+void Player::SendPushToPartyResponse(Player* player, uint8 msg)
 {
     if (player)
     {
-        WorldPacket data(MSG_QUEST_PUSH_RESULT, (8+1));
+        WorldPacket data(MSG_QUEST_PUSH_RESULT, 8 + 1);
         data << uint64(player->GetGUID());
         data << uint8(msg);                                 // valid values: 0-8
         GetSession()->SendPacket(&data);
@@ -18808,7 +18821,7 @@ bool Player::Satisfy(AccessRequirement const* ar, uint32 target_map, bool report
 
 bool Player::CheckInstanceLoginValid()
 {
-    if (!GetMap())
+    if (!FindMap())
         return false;
 
     if (!GetMap()->IsDungeon() || IsGameMaster())
@@ -22141,10 +22154,10 @@ bool Player::IsAlwaysDetectableFor(WorldObject const* seer) const
 
     if (const Player* seerPlayer = seer->ToPlayer())
         if (IsGroupVisibleFor(seerPlayer))
-            return true;
+            return !(seerPlayer->duel && seerPlayer->duel->startTime != 0 && seerPlayer->duel->opponent == this);
 
-     return false;
- }
+    return false;
+}
 
 bool Player::IsVisibleGloballyFor(Player const* u) const
 {

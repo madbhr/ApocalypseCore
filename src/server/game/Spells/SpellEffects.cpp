@@ -1023,6 +1023,38 @@ void Spell::EffectTriggerMissileSpell(SpellEffIndex effIndex)
 
 void Spell::EffectForceCast(SpellEffIndex effIndex)
 {
+    switch(m_spellInfo->Id)
+    {
+		case 66548://Teleport ((Isle of Conquest battleground)
+		{
+			if (Creature* TargetTeleport = m_caster->FindNearestCreature(22515, 60.0f, true))
+			{
+				float x, y, z, o;
+				TargetTeleport->GetPosition(x, y, z, o);
+
+				if (m_caster->GetTypeId() != TYPEID_PLAYER)
+					return;
+
+				m_caster->ToPlayer()->TeleportTo(628, x, y, z, o);
+			}
+			return;      
+		}
+		case 66549:
+		{
+			if (Creature* TargetTeleport = m_caster->FindNearestCreature(23472, 60.0f, true)) 
+			{
+				float x, y, z, o;
+				TargetTeleport->GetPosition(x, y, z, o);
+
+				if (m_caster->GetTypeId() != TYPEID_PLAYER)
+					return;
+
+				m_caster->ToPlayer()->TeleportTo(628, x, y, z, o);
+			}
+			return;
+		}
+    } //Final Teleport ((Isle of Conquest battleground)
+	
     if (effectHandleMode != SPELL_EFFECT_HANDLE_HIT_TARGET)
         return;
 
@@ -1148,7 +1180,7 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
     if (!unitTarget || unitTarget->IsInFlight())
         return;
 
-    // Pre effects
+/*  // Pre effects
     switch (m_spellInfo->Id)
     {
         case 66550: // teleports outside (Isle of Conquest)
@@ -1169,8 +1201,8 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
                     m_targets.SetDst(1174.85f, -763.24f, 48.72f, 6.26f, 628);
             }
             break;
-    }
-
+    } 
+*/
     // If not exist data for dest location - return
     if (!m_targets.HasDst())
     {
