@@ -470,6 +470,13 @@ void World::LoadConfigSettings(bool reload)
         TC_LOG_ERROR(LOG_FILTER_SERVER_LOADING, "Rate.RepairCost (%f) must be >=0. Using 0.0 instead.", rate_values[RATE_REPAIRCOST]);
         rate_values[RATE_REPAIRCOST] = 0.0f;
     }
+
+    rate_values[RATE_VIP_HONOR_PREMIUM]  = sConfigMgr->GetFloatDefault("Rate.Honor.Premium", 1.0f);
+    rate_values[RATE_XP_KILL_PREMIUM]    = sConfigMgr->GetFloatDefault("Rate.XP.Kill.Premium", 1.0f);
+    rate_values[RATE_XP_QUEST]           = sConfigMgr->GetFloatDefault("Rate.XP.Quest", 1.0f);
+    rate_values[RATE_XP_QUEST_PREMIUM]   = sConfigMgr->GetFloatDefault("Rate.XP.Quest.Premium", 1.0f);
+    rate_values[RATE_XP_EXPLORE]         = sConfigMgr->GetFloatDefault("Rate.XP.Explore", 1.0f);
+    rate_values[RATE_XP_EXPLORE_PREMIUM] = sConfigMgr->GetFloatDefault("Rate.XP.Explore.Premium", 1.0f);
     rate_values[RATE_REPUTATION_GAIN]  = sConfigMgr->GetFloatDefault("Rate.Reputation.Gain", 1.0f);
     rate_values[RATE_REPUTATION_LOWLEVEL_KILL]  = sConfigMgr->GetFloatDefault("Rate.Reputation.LowLevel.Kill", 1.0f);
     rate_values[RATE_REPUTATION_LOWLEVEL_QUEST]  = sConfigMgr->GetFloatDefault("Rate.Reputation.LowLevel.Quest", 1.0f);
