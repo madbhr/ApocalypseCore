@@ -4888,7 +4888,7 @@ void ObjectMgr::LoadSpellScriptNames()
             while (spellInfo)
             {
                 _spellScriptsStore.insert(SpellScriptsContainer::value_type(spellInfo->Id, GetScriptId(scriptName)));
-                spellInfo = sSpellMgr->GetSpellInfo(spellInfo->Id)->GetNextRankSpell();
+                spellInfo = spellInfo->GetNextRankSpell();
             }
         }
         else
@@ -8359,15 +8359,6 @@ bool ObjectMgr::IsVendorItemValid(uint32 vendor_entry, uint32 item_id, int32 max
             ChatHandler(player->GetSession()).PSendSysMessage(LANG_ITEM_ALREADY_IN_LIST, item_id, ExtendedCost);
         else
             TC_LOG_ERROR(LOG_FILTER_SQL, "Table `npc_vendor` has duplicate items %u (with extended cost %u) for vendor (Entry: %u), ignoring", item_id, ExtendedCost, vendor_entry);
-        return false;
-    }
-
-    if (vItems->GetItemCount() >= MAX_VENDOR_ITEMS)
-    {
-        if (player)
-            ChatHandler(player->GetSession()).SendSysMessage(LANG_COMMAND_ADDVENDORITEMITEMS);
-        else
-            TC_LOG_ERROR(LOG_FILTER_SQL, "Table `npc_vendor` has too many items (%u >= %i) for vendor (Entry: %u), ignore", vItems->GetItemCount(), MAX_VENDOR_ITEMS, vendor_entry);
         return false;
     }
 
