@@ -116,14 +116,14 @@ void BattlegroundDS::PostUpdateImpl(uint32 diff)
     {
         if(knockback < diff && knockbackCheck)
         {
-            for(BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end();itr++)
+            for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
             {
-                Player * plr = ObjectAccessor::FindPlayer(itr->first);
-                if (plr->GetTeam() == ALLIANCE && plr->GetDistance2d(1214, 765) <= 50 && plr->GetPositionZ() > 10)
-                    KnockBackPlayer(plr, 6.15f, 50.00f, 7.00f);
-                if (plr->GetTeam() == HORDE && plr->GetDistance2d(1369, 817) <= 50 && plr->GetPositionZ() > 10)
-                    KnockBackPlayer(plr, 3.10f, 50.00f, 7.00f);
-                plr->RemoveAurasDueToSpell(48018);
+                Player* player = ObjectAccessor::FindPlayer(itr->first);
+                if (player->GetTeam() == ALLIANCE && player->GetDistance2d(1214, 765) <= 50 && player->GetPositionZ() > 10)
+                    KnockBackPlayer(player, 6.15f, 50.00f, 7.00f);
+                if (player->GetTeam() == HORDE && player->GetDistance2d(1369, 817) <= 50 && player->GetPositionZ() > 10)
+                    KnockBackPlayer(player, 3.10f, 50.00f, 7.00f);
+                player->RemoveAurasDueToSpell(48018);
             }
             knockbackCheck = false;
         }
